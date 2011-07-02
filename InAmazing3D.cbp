@@ -29,11 +29,17 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="`sdl-config --cflags`" />
 			<Add option="-Wall" />
+			<Add option="`sdl-config --cflags`" />
+			<Add directory="libstereo" />
+			<Add directory="libmaze" />
 		</Compiler>
 		<Linker>
 			<Add option="`sdl-config --libs`" />
+			<Add library="maze" />
+			<Add library="stereo" />
+			<Add directory="libstereo" />
+			<Add directory="libmaze" />
 		</Linker>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
@@ -42,7 +48,12 @@
 		<Extensions>
 			<code_completion />
 			<envvars />
-			<lib_finder disable_auto="1" />
+			<lib_finder disable_auto="0">
+				<lib name="libpng12" />
+				<lib name="glew" />
+				<lib name="glu" />
+				<lib name="gl" />
+			</lib_finder>
 			<debugger />
 		</Extensions>
 	</Project>
