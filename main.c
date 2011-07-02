@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <string.h>
+
 #ifdef __APPLE__
     #include <SDL/SDL.h>
 #else
@@ -6,6 +8,26 @@
 #endif
 
 #include "context.h"
+
+/**
+ * The width of the maze.
+ */
+#define MAZE_WIDTH 30
+
+/**
+ * The height of the maze.
+ */
+#define MAZE_HEIGHT 20
+
+/**
+ * The width of the stereogram image.
+ */
+#define IMAGE_WIDTH 512
+
+/**
+ * The height of the stereogram image.
+ */
+#define IMAGE_HEIGHT 512
 
 static void
 do_display(void)
@@ -20,6 +42,7 @@ do_display(void)
 int
 main(int argc, char *argv[])
 {
+    Context context;
     const SDL_VideoInfo *vinfo;
     int done;
 
@@ -44,6 +67,14 @@ main(int argc, char *argv[])
     if (!screen) {
         printf("Unable to set %dx%d video: %s\n",
             vinfo->current_w, vinfo->current_h, SDL_GetError());
+        return 1;
+    }
+
+    /* Initialise the context */
+    memset(&context, 0, sizeof(context));
+    if (!context_initialize(&context, MAZE_WIDTH, MAZE_HEIGHT,
+            IMAGE_WIDTH, IMAGE_HEIGHT)) {
+        printf("Unable to initialise context.\n");
         return 1;
     }
 
@@ -77,6 +108,8 @@ main(int argc, char *argv[])
 
         do_display();
     }
+
+    context_free(&context);
 
     return 0;
 }

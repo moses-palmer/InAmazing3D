@@ -45,6 +45,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="context.h" />
+		<Unit filename="context.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
