@@ -1,0 +1,6 @@
+[submodule "libmaze"]
+	path = libmaze
+	url = git@github.com:moses-palmer/libmaze
+[submodule "libstereo"]
+	path = libstereo
+	url = git@github.com:moses-palmer/libstereo

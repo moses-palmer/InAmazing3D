@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="InAmazing3D.cbp" active="1">
+			<Depends filename="libstereo/stereo.cbp" />
+			<Depends filename="libmaze/maze.cbp" />
+		</Project>
+		<Project filename="libstereo/stereo.cbp" />
+		<Project filename="libmaze/maze.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

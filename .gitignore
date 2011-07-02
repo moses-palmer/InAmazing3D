@@ -1,0 +1,6 @@
+*.a
+*.so
+*.o
+bin/
+InAmazing3D.depend
+InAmazing3D.layout
