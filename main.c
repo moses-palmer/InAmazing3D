@@ -29,8 +29,46 @@
  */
 #define IMAGE_HEIGHT 512
 
+/**
+ * Handles any pending SDL events.
+ *
+ * @return non-zero if the application should continue running and 0 otherwise
+ */
+static int
+handle_events(Context *context)
+{
+    SDL_Event event;
+
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+        /* Exit if the window is closed */
+        case SDL_QUIT:
+            return 0;
+
+        /* Check for keypresses */
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.sym) {
+            case SDLK_ESCAPE:
+                return 0;
+
+            /* Prevent compiler warning */
+            default: break;
+            }
+            break;
+
+        /* Prevent compiler warning */
+        default: break;
+        }
+    }
+
+    return 1;
+}
+
+/**
+ * Updates the display.
+ */
 static void
-do_display(void)
+do_display(Context *context)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
@@ -44,7 +82,6 @@ main(int argc, char *argv[])
 {
     Context context;
     const SDL_VideoInfo *vinfo;
-    int done;
 
     /* Initialize SDL */
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -78,35 +115,9 @@ main(int argc, char *argv[])
         return 1;
     }
 
-    done = 0;
-    while (!done) {
-        SDL_Event event;
-
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-            /* Exit if the window is closed */
-            case SDL_QUIT:
-                done = 1;
-                break;
-
-            /* Check for keypresses */
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym) {
-                case SDLK_ESCAPE:
-                    done = 1;
-                    break;
-
-                /* Prevent compiler warning */
-                default: break;
-                }
-                break;
-
-            /* Prevent compiler warning */
-            default: break;
-            }
-        }
-
-        do_display();
+    /* Enter the main loop */
+    while (handle_events(&context)) {
+        do_display(&context);
     }
 
     context_free(&context);
