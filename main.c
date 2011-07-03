@@ -88,15 +88,13 @@ main(int argc, char *argv[])
         printf("Unable to init SDL: %s\n", SDL_GetError());
         return 1;
     }
+    atexit(SDL_Quit);
 
     vinfo = SDL_GetVideoInfo();
     if (!vinfo) {
         printf("Unable to get video info: %s\n", SDL_GetError());
         return 1;
     }
-
-    /* Make sure SDL cleans up before exit */
-    atexit(SDL_Quit);
 
     /* Initialise the screen */
     SDL_Surface* screen = SDL_SetVideoMode(vinfo->current_w, vinfo->current_h,
