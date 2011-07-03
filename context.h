@@ -70,4 +70,13 @@ context_initialize(Context *context,
 void
 context_free(Context *context);
 
+/**
+ * Renders the context on screen.
+ *
+ * @param context
+ *     The context.
+ */
+void
+context_render(Context *context);
+
 #endif

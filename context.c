@@ -107,3 +107,8 @@ context_free(Context *context)
         context->stereo.image = NULL;
     }
 }
+
+void
+context_render(Context *context)
+{
+}

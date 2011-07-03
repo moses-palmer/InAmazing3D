@@ -73,6 +73,9 @@ do_display(Context *context)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
+    /* Render the context */
+    context_render(context);
+
     /* Render to screen */
     SDL_GL_SwapBuffers();
 }
