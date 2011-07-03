@@ -97,8 +97,9 @@ main(int argc, char *argv[])
     }
 
     /* Initialise the screen */
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_Surface* screen = SDL_SetVideoMode(vinfo->current_w, vinfo->current_h,
-        32, SDL_HWSURFACE | SDL_FULLSCREEN | SDL_GL_DOUBLEBUFFER);
+        32, SDL_OPENGL | SDL_FULLSCREEN);
     if (!screen) {
         printf("Unable to set %dx%d video: %s\n",
             vinfo->current_w, vinfo->current_h, SDL_GetError());
