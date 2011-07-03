@@ -104,9 +104,6 @@ opengl_initialize(int width, int height)
 int
 main(int argc, char *argv[])
 {
-    Context context;
-    const SDL_VideoInfo *vinfo;
-
     /* Initialize SDL */
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         printf("Unable to init SDL: %s\n", SDL_GetError());
@@ -114,7 +111,8 @@ main(int argc, char *argv[])
     }
     atexit(SDL_Quit);
 
-    vinfo = SDL_GetVideoInfo();
+    /* Get video information */
+    const SDL_VideoInfo *vinfo = SDL_GetVideoInfo();
     if (!vinfo) {
         printf("Unable to get video info: %s\n", SDL_GetError());
         return 1;
@@ -134,6 +132,7 @@ main(int argc, char *argv[])
     opengl_initialize(vinfo->current_w, vinfo->current_h);
 
     /* Initialise the context */
+    Context context;
     memset(&context, 0, sizeof(context));
     if (!context_initialize(&context, MAZE_WIDTH, MAZE_HEIGHT,
             IMAGE_WIDTH, IMAGE_HEIGHT)) {
