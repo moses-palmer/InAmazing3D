@@ -77,6 +77,30 @@ do_display(Context *context)
     SDL_GL_SwapBuffers();
 }
 
+/**
+ * Initialises OpenGL for the specified resolution.
+ *
+ * @param width, height
+ *     The width and height of the viewport.
+ */
+static void
+opengl_initialize(int width, int height)
+{
+    /* Culling. */
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CCW);
+    glEnable(GL_CULL_FACE);
+
+    /* Enable depth test */
+    glEnable(GL_DEPTH_TEST);
+
+    /* Set the clear color. */
+    glClearColor(0, 0, 0, 0);
+
+    /* Setup our viewport. */
+    glViewport(0, 0, width, height);
+}
+
 int
 main(int argc, char *argv[])
 {
@@ -105,6 +129,9 @@ main(int argc, char *argv[])
             vinfo->current_w, vinfo->current_h, SDL_GetError());
         return 1;
     }
+
+    /* Setup OpenGL */
+    opengl_initialize(vinfo->current_w, vinfo->current_h);
 
     /* Initialise the context */
     memset(&context, 0, sizeof(context));
