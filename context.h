@@ -41,6 +41,14 @@ typedef struct {
         /** The stereogram image */
         StereoImage *image;
     } stereo;
+
+    /**
+     * Data used by OpenGL.
+     */
+     struct {
+         /** The ratio screen_width / screen_height */
+        GLfloat ratio;
+    } gl;
 } Context;
 
 /**
@@ -56,13 +64,16 @@ typedef struct {
  *     The dimensions of the maze.
  * @param image_width, image_height
  *     The dimensions of the stereogram image.
+ * @param screen_width, screen_height
+ *     The dimensions of the screen.
  * @return non-zero upon success and 0 otherwise
  * @see context_free
  */
 int
 context_initialize(Context *context,
     unsigned int maze_width, unsigned int maze_height,
-    unsigned int image_width, unsigned int image_height);
+    unsigned int image_width, unsigned int image_height,
+    unsigned int screen_width, unsigned int scren_height);
 
 /**
  * Releases a previously created context.

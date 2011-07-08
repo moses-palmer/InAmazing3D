@@ -187,7 +187,7 @@ main(int argc, char *argv[])
     Context context;
     memset(&context, 0, sizeof(context));
     if (!context_initialize(&context, MAZE_WIDTH, MAZE_HEIGHT,
-            IMAGE_WIDTH, IMAGE_HEIGHT)) {
+            IMAGE_WIDTH, IMAGE_HEIGHT, vinfo->current_w, vinfo->current_h)) {
         printf("Unable to initialise context.\n");
         return 1;
     }

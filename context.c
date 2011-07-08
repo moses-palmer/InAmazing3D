@@ -13,7 +13,8 @@
 int
 context_initialize(Context *context,
     unsigned int maze_width, unsigned int maze_height,
-    unsigned int image_width, unsigned int image_height)
+    unsigned int image_width, unsigned int image_height,
+    unsigned int screen_width, unsigned int screen_height)
 {
     double luminance_strengths1[5];
     double luminance_strengths2[5];
@@ -73,8 +74,12 @@ context_initialize(Context *context,
         pattern_base);
     stereo_pattern_effect_apply(context->stereo.effect);
 
+    /* Initialise the stereogram image */
     context->stereo.image = stereo_image_create_from_zbuffer(
         context->stereo.zbuffer, pattern, 10.0, 1);
+
+    /* Initialise the OpenGL data */
+    context->gl.ratio = (GLfloat)screen_width / screen_height;
 
     return 1;
 }
