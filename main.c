@@ -30,6 +30,61 @@
 #define IMAGE_HEIGHT 512
 
 /**
+ * The number of milliseconds between each redraw.
+ */
+#define TIMER_INTERVAL 40
+
+/**
+ * The user event code that signals that the display should be refreshed.
+ */
+#define USER_EVENT_DISPLAY (SDL_USEREVENT + 1)
+
+/**
+ * The timer callback function.
+ *
+ * This function pushes an event to SDL to make it execute in the main thread.
+ *
+ * @param interval
+ *     The timer interval.
+ * @param dummy
+ *     Not used.
+ * @return the next timer interval, which is the same as the current
+ */
+static Uint32
+do_timer(Uint32 interval, void *dummy)
+{
+    SDL_Event event;
+
+    event.user.type = SDL_USEREVENT;
+    event.user.code = USER_EVENT_DISPLAY;
+    event.user.data1 = NULL;
+    event.user.data2 = NULL;
+
+    SDL_PushEvent(&event);
+
+    return interval;
+}
+
+/**
+ * Updates the display.
+ *
+ * @param context
+ *     The context.
+ */
+static void
+do_display(Context *context)
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+
+    /* Render the context */
+    context_render(context);
+
+    /* Render to screen */
+    SDL_GL_SwapBuffers();
+}
+
+/**
  * Handles any pending SDL events.
  *
  * @return non-zero if the application should continue running and 0 otherwise
@@ -39,7 +94,7 @@ handle_events(Context *context)
 {
     SDL_Event event;
 
-    while (SDL_PollEvent(&event)) {
+    while (SDL_WaitEvent(&event)) {
         switch (event.type) {
         /* Exit if the window is closed */
         case SDL_QUIT:
@@ -56,28 +111,22 @@ handle_events(Context *context)
             }
             break;
 
+        case SDL_USEREVENT:
+            switch (event.user.code) {
+            case USER_EVENT_DISPLAY:
+                do_display(context);
+                break;
+
+            default: break;
+            }
+            break;
+
         /* Prevent compiler warning */
         default: break;
         }
     }
 
     return 1;
-}
-
-/**
- * Updates the display.
- */
-static void
-do_display(Context *context)
-{
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
-
-    /* Render the context */
-    context_render(context);
-
-    /* Render to screen */
-    SDL_GL_SwapBuffers();
 }
 
 /**
@@ -143,10 +192,18 @@ main(int argc, char *argv[])
         return 1;
     }
 
-    /* Enter the main loop */
-    while (handle_events(&context)) {
-        do_display(&context);
+    /* Create the timer */
+    SDL_TimerID timer = SDL_AddTimer(TIMER_INTERVAL, do_timer, NULL);
+    if (!timer) {
+        context_free(&context);
+        printf("Unable to add timer.\n");
+        return 1;
     }
+
+    /* Enter the main loop */
+    while (handle_events(&context));
+
+    SDL_RemoveTimer(timer);
 
     context_free(&context);
 
