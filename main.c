@@ -106,6 +106,26 @@ handle_events(Context *context)
             case SDLK_ESCAPE:
                 return 0;
 
+            case SDLK_UP:
+                context->camera.y += 0.1;
+                context->target.y += 0.1;
+                break;
+
+            case SDLK_DOWN:
+                context->camera.y -= 0.1;
+                context->target.y -= 0.1;
+                break;
+
+            case SDLK_LEFT:
+                context->camera.x -= 0.1;
+                context->target.x -= 0.1;
+                break;
+
+            case SDLK_RIGHT:
+                context->camera.x += 0.1;
+                context->target.x += 0.1;
+                break;
+
             /* Prevent compiler warning */
             default: break;
             }
