@@ -170,6 +170,27 @@ context_initialize(Context *context,
 
     /* Initialise the OpenGL data */
     context->gl.ratio = (GLfloat)screen_width / screen_height;
+    glGenFramebuffers(sizeof(context->gl.framebuffers) / sizeof(GLuint),
+        context->gl.framebuffers);
+    glGenRenderbuffers(sizeof(context->gl.renderbuffers) / sizeof(GLuint),
+        context->gl.renderbuffers);
+    glGenTextures(sizeof(context->gl.textures) / sizeof(GLuint),
+        context->gl.textures);
+    context->gl.renderStereo = 0;
+
+    /* Specify the renderbuffer */
+    GLuint renderbuffer = context->gl.renderbuffers[0];
+    glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT,
+        image_width, image_height);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+    /* Specify the render buffer */
+    GLuint framebuffer = context->gl.framebuffers[0];
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+        GL_RENDERBUFFER_EXT, renderbuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     /* Initialise the camera and target */
     context->camera.x = context->target.x = maze_width / 2.0;
@@ -262,6 +283,13 @@ context_free(Context *context)
         stereo_image_free(context->stereo.image);
         context->stereo.image = NULL;
     }
+
+    glDeleteTextures(sizeof(context->gl.textures) / sizeof(GLuint),
+        context->gl.textures);
+    glDeleteRenderbuffers(sizeof(context->gl.renderbuffers) / sizeof(GLuint),
+        context->gl.renderbuffers);
+    glDeleteFramebuffers(sizeof(context->gl.framebuffers) / sizeof(GLuint),
+        context->gl.framebuffers);
 }
 
 void

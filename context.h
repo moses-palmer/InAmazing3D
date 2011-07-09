@@ -69,6 +69,15 @@ typedef struct {
      struct {
          /** The ratio screen_width / screen_height */
         GLfloat ratio;
+
+        /** The frame buffers used */
+        GLuint framebuffers[1];
+
+        /** The render buffers used */
+        GLuint renderbuffers[1];
+
+        /** The thextures used */
+        GLuint textures[1];
     } gl;
 
     /**
