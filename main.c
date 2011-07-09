@@ -79,6 +79,10 @@ do_display(Context *context)
     /* Render the context */
     context_render(context);
 
+    context_object_target(&context->camera,
+        context->target.x, context->target.y, 0.7);
+    context_object_move(&context->camera, 0.1);
+
     /* Render to screen */
     SDL_GL_SwapBuffers();
 }
@@ -110,22 +114,18 @@ handle_events(Context *context)
                 break;
 
             case SDLK_UP:
-                context->camera.y += 0.1;
                 context->target.y += 0.1;
                 break;
 
             case SDLK_DOWN:
-                context->camera.y -= 0.1;
                 context->target.y -= 0.1;
                 break;
 
             case SDLK_LEFT:
-                context->camera.x -= 0.1;
                 context->target.x -= 0.1;
                 break;
 
             case SDLK_RIGHT:
-                context->camera.x += 0.1;
                 context->target.x += 0.1;
                 break;
 
