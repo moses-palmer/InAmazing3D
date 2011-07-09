@@ -46,6 +46,12 @@
 struct context_object {
     /** The position */
     double x, y;
+
+    /** The velocity */
+    double vx, vy;
+
+    /** The acceleration */
+    double ax, ay;
 };
 
 typedef struct {

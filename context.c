@@ -195,6 +195,10 @@ context_initialize(Context *context,
     /* Initialise the camera and target */
     context->camera.x = context->target.x = maze_width / 2.0;
     context->camera.y = context->target.y = maze_height / 2.0;
+    context->camera.vx = context->target.vx = 0.0;
+    context->camera.vy = context->target.vy = 0.0;
+    context->camera.ax = context->target.ax = 0.0;
+    context->camera.ay = context->target.ay = 0.0;
 
     return 1;
 }
