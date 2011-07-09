@@ -10,6 +10,16 @@
 #include <stereo.h>
 
 /**
+ * The width of maze walls.
+ */
+#define MAZE_WALL_WIDTH 0.25
+
+/**
+ * The width of the slopes of maze walls.
+ */
+#define MAZE_SLOPE_WIDTH 0.0
+
+/**
  * The width of the pattern used to render a stereogram.
  */
 #define PATTERN_WIDTH 45
@@ -18,6 +28,16 @@
  * The height of the pattern used to render a stereogram.
  */
 #define PATTERN_HEIGHT 45
+
+/**
+ * The z-coordinate of the camera.
+ */
+#define CAMERA_Z 5.0
+
+/**
+ * The z-coordinate of the target.
+ */
+#define TARGET_Z 0.2
 
 typedef struct {
     /**
@@ -49,6 +69,24 @@ typedef struct {
          /** The ratio screen_width / screen_height */
         GLfloat ratio;
     } gl;
+
+    /**
+     * The location of the camera.
+     *
+     * The camera floats above the ground.
+     */
+    struct {
+        GLfloat x, y;
+    } camera;
+
+    /**
+     * The location of the target.
+     *
+     * The target is located on the ground.
+     */
+    struct {
+        GLfloat x, y;
+    } target;
 } Context;
 
 /**
