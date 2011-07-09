@@ -78,6 +78,9 @@ typedef struct {
 
         /** The thextures used */
         GLuint textures[1];
+
+        /** Whether to render a stereogram */
+        int render_stereo;
     } gl;
 
     /**
