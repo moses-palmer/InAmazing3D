@@ -1,6 +1,7 @@
 #ifndef CONTEXT_H
 #define CONTEXT_H
 
+#include <GL/glew.h>
 #include <GL/gl.h>
 
 #include <maze/maze.h>
