@@ -13,12 +13,12 @@
 /**
  * The width of maze walls.
  */
-#define MAZE_WALL_WIDTH 0.25
+#define MAZE_WALL_WIDTH 0.05
 
 /**
  * The width of the slopes of maze walls.
  */
-#define MAZE_SLOPE_WIDTH 0.0
+#define MAZE_SLOPE_WIDTH 0.25
 
 /**
  * The width of the pattern used to render a stereogram.
@@ -33,7 +33,7 @@
 /**
  * The z-coordinate of the camera.
  */
-#define CAMERA_Z 5.0
+#define CAMERA_Z 3.5
 
 /**
  * The z-coordinate of the target.

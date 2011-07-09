@@ -250,7 +250,7 @@ camera_setup(Context *context)
         context->target.y,
         TARGET_Z,
 
-        0.0, 1.0, 0.0);
+        0.1, 1.0, 0.0);
 }
 
 /**
