@@ -269,4 +269,6 @@ context_render(Context *context)
 {
     camera_setup(context);
     lights_setup(context);
+    maze_render_gl(context->maze.data, MAZE_WALL_WIDTH, MAZE_SLOPE_WIDTH,
+        0, (int)context->camera.x, (int)context->camera.y, 50);
 }
