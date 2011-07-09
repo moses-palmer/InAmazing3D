@@ -40,6 +40,14 @@
  */
 #define TARGET_Z 0.2
 
+/**
+ * The properties of an object in 2D space.
+ */
+struct context_object {
+    /** The position */
+    double x, y;
+};
+
 typedef struct {
     /**
      * The maze that we are rendering.
@@ -88,18 +96,14 @@ typedef struct {
      *
      * The camera floats above the ground.
      */
-    struct {
-        GLfloat x, y;
-    } camera;
+    struct context_object camera;
 
     /**
      * The location of the target.
      *
      * The target is located on the ground.
      */
-    struct {
-        GLfloat x, y;
-    } target;
+    struct context_object target;
 } Context;
 
 /**
