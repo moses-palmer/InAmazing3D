@@ -203,6 +203,38 @@ camera_setup(Context *context)
         0.0, 1.0, 0.0);
 }
 
+/**
+ * Sets up the lights for the context.
+ *
+ * @param context
+ *     The context.
+ */
+static void
+lights_setup(Context *context)
+{
+    GLfloat light_position[] = {
+        context->camera.x + 1.0,
+        context->camera.y + 1.0,
+        (CAMERA_Z - TARGET_Z) / 2.0};
+    static GLfloat light_ambient[] = {0.0, 0.0, 0.0, 1.0};
+    static GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};
+    static GLfloat light_specular[] = {1.0, 1.0, 1.0, 1.0};
+    static GLfloat material_specular[] = {0.0, 0.0, 0.0, 1.0};
+    static GLfloat material_emission[] = {0.0, 0.0, 0.0, 1.0};
+
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, material_specular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, material_emission);
+}
+
 void
 context_free(Context *context)
 {
@@ -236,4 +268,5 @@ void
 context_render(Context *context)
 {
     camera_setup(context);
+    lights_setup(context);
 }
