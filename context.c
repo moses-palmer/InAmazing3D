@@ -11,6 +11,31 @@
 #define LUMINANCE_STRENGTH2_BASE 2.0
 #define LUMINANCE_STRENGTH2_EXTRA 4.0
 
+void
+context_object_move(struct context_object *object, double resistance)
+{
+    object->x = object->x + object->vx;
+    object->y = object->y + object->vy;
+
+    object->vx = resistance * (object->vx + object->ax);
+    object->vy = resistance * (object->vy + object->ay);
+}
+
+void
+context_object_accelerate(struct context_object *object, GLfloat a)
+{
+    object->ax = a * object->x;
+    object->ay = a * object->y;
+}
+
+void
+context_object_target(struct context_object *object,
+    double x, double y, double a)
+{
+    object->ax = a * (x - object->x);
+    object->ay = a * (y - object->y);
+}
+
 /**
  * @see gluPerspective
  */
