@@ -105,6 +105,10 @@ handle_events(Context *context)
             case SDLK_ESCAPE:
                 return 0;
 
+            case SDLK_SPACE:
+                context->gl.render_stereo = !context->gl.render_stereo;
+                break;
+
             case SDLK_UP:
                 context->camera.y += 0.1;
                 context->target.y += 0.1;
