@@ -186,6 +186,9 @@ main(int argc, char *argv[])
     }
     atexit(SDL_Quit);
 
+    /* Hide the mouse cursor */
+    SDL_ShowCursor(0);
+
     /* Get video information */
     const SDL_VideoInfo *vinfo = SDL_GetVideoInfo();
     if (!vinfo) {
