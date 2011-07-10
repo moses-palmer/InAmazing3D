@@ -363,7 +363,8 @@ context_render_stereo(Context *context)
 
     /* Draw the maze with a floor */
     maze_render_gl(context->maze.data, MAZE_WALL_WIDTH, MAZE_SLOPE_WIDTH,
-        1, (int)context->camera.x, (int)context->camera.y, 50);
+        1, (int)context->camera.x,
+        context->maze.data->height - (int)context->camera.y, 5);
 
     /* Retrieve the depth data to the z-buffer */
     glPixelStorei(GL_PACK_ROW_LENGTH, context->stereo.zbuffer->rowoffset);
@@ -421,7 +422,8 @@ context_render_plain(Context *context)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDisable(GL_TEXTURE_2D);
     maze_render_gl(context->maze.data, MAZE_WALL_WIDTH, MAZE_SLOPE_WIDTH,
-        0, (int)context->camera.x, (int)context->camera.y, 50);
+        0, (int)context->camera.x,
+        context->maze.data->height - (int)context->camera.y, 5);
 }
 
 void
