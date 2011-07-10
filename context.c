@@ -263,16 +263,18 @@ static void
 lights_setup(Context *context, int enable)
 {
     if (enable) {
-        GLfloat light_position[] = {
-            context->camera.x + 1.0,
-            context->camera.y + 1.0,
-            (CAMERA_Z - TARGET_Z) / 2.0};
+        GLfloat light_position[] = {0.0, 0.0, -1.0, 1.0};
         static GLfloat light_ambient[] = {0.0, 0.0, 0.0, 1.0};
         static GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};
         static GLfloat light_specular[] = {1.0, 1.0, 1.0, 1.0};
         static GLfloat material_emission[] = {0.0, 0.0, 0.0, 1.0};
         static GLfloat material_diffuse[] = {0.0, 0.0, 0.0, 1.0};
         static GLfloat material_specular[] = {0.0, 0.0, 0.0, 1.0};
+
+        /* Select the correct matrix for "light at eye" mode */
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
 
         glLightfv(GL_LIGHT0, GL_POSITION, light_position);
         glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
@@ -282,10 +284,11 @@ lights_setup(Context *context, int enable)
         glEnable(GL_LIGHT0);
 
         glEnable(GL_COLOR_MATERIAL);
-        glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
         glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, material_emission);
         glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, material_diffuse);
         glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, material_specular);
+
+        glPopMatrix();
     }
     else {
         glDisable(GL_LIGHTING);
@@ -422,7 +425,7 @@ context_render_plain(Context *context)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDisable(GL_TEXTURE_2D);
     maze_render_gl(context->maze.data, MAZE_WALL_WIDTH, MAZE_SLOPE_WIDTH,
-        0, (int)context->camera.x,
+        1, (int)context->camera.x,
         context->maze.data->height - (int)context->camera.y, 5);
 }
 
