@@ -98,6 +98,17 @@ context_object_target(struct context_object *object,
 void
 context_object_accelerate(struct context_object *object, GLfloat a);
 
+/**
+ * Render a context object on screen.
+ *
+ * The object is rendered as a sphere approximation.
+ *
+ * @param object
+ *     The object to render.
+ */
+void
+context_object_render(const struct context_object *object);
+
 typedef struct {
     /**
      * The maze that we are rendering.

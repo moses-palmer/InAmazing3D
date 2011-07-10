@@ -11,6 +11,9 @@
 #define LUMINANCE_STRENGTH2_BASE 2.0
 #define LUMINANCE_STRENGTH2_EXTRA 4.0
 
+/** The precision of the sphere approximation */
+#define SPHERE_PRECISION 20
+
 void
 context_object_move(struct context_object *object, double resistance)
 {
@@ -34,6 +37,44 @@ context_object_target(struct context_object *object,
 {
     object->ax = a * (x - object->x);
     object->ay = a * (y - object->y);
+}
+
+void
+context_object_render(const struct context_object *object)
+{
+    int i, j;
+
+    glPushMatrix();
+
+    glTranslatef(object->x, object->y, 0.7);
+    glScalef(0.2, 0.2, 0.2);
+
+    for (i = 0; i < SPHERE_PRECISION / 2; i++) {
+        GLfloat theta1, theta2;
+        theta1 = i * 2.0 * M_PI / SPHERE_PRECISION - M_PI / 2.0;
+        theta2 = (i + 1) * 2.0 * M_PI / SPHERE_PRECISION - M_PI / 2.0;
+
+        glBegin(GL_TRIANGLE_STRIP);
+        for (j = 0; j <= SPHERE_PRECISION; j++) {
+            GLfloat theta3 = j * 2.0 * M_PI / SPHERE_PRECISION;
+            GLfloat x, y, z;
+
+            x = cos(theta1) * cos(theta3);
+            y = sin(theta1);
+            z = cos(theta1) * sin(theta3);
+            glNormal3f(x, y, z);
+            glVertex3f(x, y, z);
+
+            x = cos(theta2) * cos(theta3);
+            y = sin(theta2);
+            z = cos(theta2) * sin(theta3);
+            glNormal3f(x, y, z);
+            glVertex3f(x, y, z);
+        }
+        glEnd();
+    }
+
+    glPopMatrix();
 }
 
 /**
@@ -368,6 +409,7 @@ context_render_stereo(Context *context)
     maze_render_gl(context->maze.data, MAZE_WALL_WIDTH, MAZE_SLOPE_WIDTH,
         1, (int)context->camera.x,
         context->maze.data->height - (int)context->camera.y, 5);
+    context_object_render(&context->target);
 
     /* Retrieve the depth data to the z-buffer */
     glPixelStorei(GL_PACK_ROW_LENGTH, context->stereo.zbuffer->rowoffset);
@@ -427,6 +469,7 @@ context_render_plain(Context *context)
     maze_render_gl(context->maze.data, MAZE_WALL_WIDTH, MAZE_SLOPE_WIDTH,
         1, (int)context->camera.x,
         context->maze.data->height - (int)context->camera.y, 5);
+    context_object_render(&context->target);
 }
 
 void
