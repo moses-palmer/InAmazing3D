@@ -35,6 +35,11 @@
 #define TIMER_INTERVAL 40
 
 /**
+ * The acceleration caused by the joystick.
+ */
+#define JOYSTICK_ACCELERATION 0.2
+
+/**
  * The user event code that signals that the display should be refreshed.
  */
 #define USER_EVENT_DISPLAY (SDL_USEREVENT + 1)
@@ -82,6 +87,7 @@ do_display(Context *context)
     context_object_target(&context->camera,
         context->target.x, context->target.y, 0.7);
     context_object_move(&context->camera, 0.1);
+    context_object_move(&context->target, 0.2);
 
     /* Render to screen */
     SDL_GL_SwapBuffers();
@@ -113,24 +119,21 @@ handle_events(Context *context)
                 context->gl.render_stereo = !context->gl.render_stereo;
                 break;
 
-            case SDLK_UP:
-                context->target.y += 0.1;
-                break;
-
-            case SDLK_DOWN:
-                context->target.y -= 0.1;
-                break;
-
-            case SDLK_LEFT:
-                context->target.x -= 0.1;
-                break;
-
-            case SDLK_RIGHT:
-                context->target.x += 0.1;
-                break;
-
             /* Prevent compiler warning */
             default: break;
+            }
+            break;
+
+        case SDL_JOYAXISMOTION:
+            if (event.jaxis.axis == 0) {
+                /* X axis */
+                context->target.ax = JOYSTICK_ACCELERATION
+                    * (double)event.jaxis.value / 32768;
+            }
+            else if (event.jaxis.axis == 1) {
+                /* Y axis; negative value */
+                context->target.ay = JOYSTICK_ACCELERATION
+                    * -(double)event.jaxis.value / 32768;
             }
             break;
 
@@ -234,8 +237,26 @@ main(int argc, char *argv[])
         return 1;
     }
 
+    /* Open the joystick */
+    SDL_Joystick *joystick = NULL;
+    int jindex;
+    for (jindex = 0; jindex < SDL_NumJoysticks(); jindex++) {
+        joystick = SDL_JoystickOpen(jindex);
+        if (joystick) {
+            /* If we have at least two axes, use this joystick */
+            if (SDL_JoystickNumAxes(joystick) >= 2) {
+                printf("Found joystick %s\n", SDL_JoystickName(jindex));
+                break;
+            }
+
+            SDL_JoystickClose(joystick);
+        }
+    }
+
     /* Enter the main loop */
     while (handle_events(&context));
+
+    SDL_JoystickClose(joystick);
 
     SDL_RemoveTimer(timer);
 
