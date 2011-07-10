@@ -240,7 +240,7 @@ static void
 camera_setup(Context *context)
 {
     glMatrixMode(GL_MODELVIEW);
-    mgluPerspective(45, context->gl.ratio, CAMERA_Z - 1.5, CAMERA_Z + 0.5);
+    mgluPerspective(45, context->gl.ratio, CAMERA_Z - 1.5, CAMERA_Z + 1.0);
     mgluLookAt(
         context->camera.x,
         context->camera.y,
