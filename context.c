@@ -492,6 +492,14 @@ context_render(Context *context)
 }
 
 void
+context_camera_move(Context *context)
+{
+    context_object_target(&context->camera,
+        context->target.x, context->target.y, 0.7);
+    context_object_move(&context->camera, 0.1);
+}
+
+void
 context_target_accelerate(Context *context, double ax, double ay)
 {
     context->target.ax = ax;

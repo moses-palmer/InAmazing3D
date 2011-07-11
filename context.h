@@ -210,6 +210,15 @@ void
 context_render(Context *context);
 
 /**
+ * Moves the camera towards the target.
+ *
+ * @param context
+ *     The context.
+ */
+void
+context_camera_move(Context *context);
+
+/**
  * Updates the acceleration of the context target.
  *
  * @param context

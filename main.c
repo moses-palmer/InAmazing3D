@@ -84,10 +84,9 @@ do_display(Context *context)
     /* Render the context */
     context_render(context);
 
-    context_object_target(&context->camera,
-        context->target.x, context->target.y, 0.7);
-    context_object_move(&context->camera, 0.1);
+    /* Update the target and camera */
     context_object_move(&context->target, 0.2);
+    context_camera_move(context);
 
     /* Render to screen */
     SDL_GL_SwapBuffers();
