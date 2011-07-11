@@ -505,3 +505,9 @@ context_target_accelerate(Context *context, double ax, double ay)
     context->target.ax = ax;
     context->target.ay = ay;
 }
+
+void
+context_target_move(Context *context)
+{
+    context_object_move(&context->target, 0.2);
+}

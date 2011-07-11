@@ -85,7 +85,7 @@ do_display(Context *context)
     context_render(context);
 
     /* Update the target and camera */
-    context_object_move(&context->target, 0.2);
+    context_target_move(context);
     context_camera_move(context);
 
     /* Render to screen */

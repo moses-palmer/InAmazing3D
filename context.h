@@ -229,4 +229,15 @@ context_camera_move(Context *context);
 void
 context_target_accelerate(Context *context, double ax, double ay);
 
+/**
+ * Moves the target.
+ *
+ * The velocity and direction are taken from the target struct.
+ *
+ * @param context
+ *     The context.
+ */
+void
+context_target_move(Context *context);
+
 #endif
