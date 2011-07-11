@@ -490,3 +490,10 @@ context_render(Context *context)
         context_render_plain(context);
     }
 }
+
+void
+context_target_accelerate(Context *context, double ax, double ay)
+{
+    context->target.ax = ax;
+    context->target.ay = ay;
+}

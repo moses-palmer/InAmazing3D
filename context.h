@@ -209,4 +209,15 @@ context_free(Context *context);
 void
 context_render(Context *context);
 
+/**
+ * Updates the acceleration of the context target.
+ *
+ * @param context
+ *     The context whose target to manipulate.
+ * @param ax, ay
+ *     The horizontal and vertical acceleration.
+ */
+void
+context_target_accelerate(Context *context, double ax, double ay);
+
 #endif

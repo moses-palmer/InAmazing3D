@@ -130,16 +130,13 @@ handle_events(Context *context)
             break;
 
         case SDL_JOYAXISMOTION:
-            if (event.jaxis.axis == 0) {
-                /* X axis */
-                context->target.ax = JOYSTICK_ACCELERATION
-                    * (double)event.jaxis.value / 32768;
-            }
-            else if (event.jaxis.axis == 1) {
-                /* Y axis; negative value */
-                context->target.ay = JOYSTICK_ACCELERATION
-                    * -(double)event.jaxis.value / 32768;
-            }
+            context_target_accelerate(context,
+                (event.jaxis.axis == 0)
+                    ? JOYSTICK_ACCELERATION * (double)event.jaxis.value / 32768
+                    : context->target.ax,
+                (event.jaxis.axis == 1)
+                    ? -JOYSTICK_ACCELERATION * (double)event.jaxis.value / 32768
+                    : context->target.ay);
             break;
 
         case SDL_USEREVENT:
