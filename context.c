@@ -14,7 +14,16 @@
 /** The precision of the sphere approximation */
 #define SPHERE_PRECISION 20
 
-void
+/**
+ * Updates the speed and position according to the current values.
+ *
+ * @param object
+ *     The context object to move.
+ * @param resistance
+ *     The resistance to movement. The objet speed is multiplied with this
+ *     value.
+ */
+static void
 context_object_move(struct context_object *object, double resistance)
 {
     object->x = object->x + object->vx;
@@ -24,14 +33,21 @@ context_object_move(struct context_object *object, double resistance)
     object->vy = resistance * (object->vy + object->ay);
 }
 
-void
-context_object_accelerate(struct context_object *object, GLfloat a)
-{
-    object->ax = a * object->x;
-    object->ay = a * object->y;
-}
-
-void
+/**
+ * Makes an object target a position.
+ *
+ * Its acceleration is set to the difference between the current position and
+ * the target multiplied by a.
+ *
+ * @param object
+ *     The context object to target.
+ * @param x, y
+ *     The position to target.
+ * @param a
+ *     The strength of the acceleration towards (x, y). This should be a value
+ *     less than 1.0.
+ */
+static void
 context_object_target(struct context_object *object,
     double x, double y, double a)
 {
@@ -39,7 +55,15 @@ context_object_target(struct context_object *object,
     object->ay = a * (y - object->y);
 }
 
-void
+/**
+ * Render a context object on screen.
+ *
+ * The object is rendered as a sphere approximation.
+ *
+ * @param object
+ *     The object to render.
+ */
+static void
 context_object_render(const struct context_object *object)
 {
     int i, j;
