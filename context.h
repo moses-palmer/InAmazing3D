@@ -130,6 +130,9 @@ typedef struct {
 
         /** The stereogram image */
         StereoImage *image;
+
+        /** Whether to update the pattern for every frame */
+        int update_pattern;
     } stereo;
 
     /**

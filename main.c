@@ -119,6 +119,11 @@ handle_events(Context *context)
                 context->gl.render_stereo = !context->gl.render_stereo;
                 break;
 
+            case SDLK_p:
+                context->stereo.update_pattern =
+                    !context->stereo.update_pattern;
+                break;
+
             /* Prevent compiler warning */
             default: break;
             }
