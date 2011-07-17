@@ -64,13 +64,14 @@ context_object_target(struct context_object *object,
  *     The object to render.
  */
 static void
-context_object_render(const struct context_object *object)
+context_object_render(const Context *context)
 {
     int i, j;
 
     glPushMatrix();
 
-    glTranslatef(object->x, object->y, 0.7);
+    glTranslatef(context->target.x,
+        context->maze.data->height - context->target.y, 0.7);
     glScalef(0.2, 0.2, 0.2);
 
     for (i = 0; i < SPHERE_PRECISION / 2; i++) {
@@ -311,11 +312,11 @@ camera_setup(Context *context)
     mgluPerspective(45, context->gl.ratio, CAMERA_Z - 1.5, CAMERA_Z + 1.0);
     mgluLookAt(
         context->camera.x,
-        context->camera.y,
+        context->maze.data->height - context->camera.y,
         CAMERA_Z,
 
         context->target.x,
-        context->target.y,
+        context->maze.data->height - context->target.y,
         TARGET_Z,
 
         0.1, 1.0, 0.0);
@@ -434,9 +435,8 @@ context_render_stereo(Context *context)
 
     /* Draw the maze with a floor */
     maze_render_gl(context->maze.data, MAZE_WALL_WIDTH, MAZE_SLOPE_WIDTH,
-        1, (int)context->camera.x,
-        context->maze.data->height - (int)context->camera.y, 5);
-    context_object_render(&context->target);
+        1, (int)context->camera.x, (int)context->camera.y, 5);
+    context_object_render(context);
 
     /* Retrieve the depth data to the z-buffer */
     glPixelStorei(GL_PACK_ROW_LENGTH, context->stereo.zbuffer->rowoffset);
@@ -496,9 +496,8 @@ context_render_plain(Context *context)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDisable(GL_TEXTURE_2D);
     maze_render_gl(context->maze.data, MAZE_WALL_WIDTH, MAZE_SLOPE_WIDTH,
-        1, (int)context->camera.x,
-        context->maze.data->height - (int)context->camera.y, 5);
-    context_object_render(&context->target);
+        1, (int)context->camera.x, (int)context->camera.y, 5);
+    context_object_render(context);
 }
 
 void

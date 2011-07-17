@@ -134,7 +134,7 @@ handle_events(Context *context)
                     ? JOYSTICK_ACCELERATION * (double)event.jaxis.value / 32768
                     : context->target.ax,
                 (event.jaxis.axis == 1)
-                    ? -JOYSTICK_ACCELERATION * (double)event.jaxis.value / 32768
+                    ? JOYSTICK_ACCELERATION * (double)event.jaxis.value / 32768
                     : context->target.ay);
             break;
 
