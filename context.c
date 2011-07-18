@@ -14,6 +14,10 @@
 /** The precision of the sphere approximation */
 #define SPHERE_PRECISION 20
 
+/** The margin of the target */
+#define TARGET_MARGIN (MAZE_WALL_WIDTH + MAZE_SLOPE_WIDTH)
+#define ITARGET_MARGIN (1.0 - TARGET_MARGIN)
+
 /**
  * Updates the speed and position according to the current values.
  *
@@ -287,8 +291,8 @@ context_initialize(Context *context,
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     /* Initialise the camera and target */
-    context->camera.x = context->target.x = maze_width / 2.0;
-    context->camera.y = context->target.y = maze_height / 2.0;
+    context->camera.x = context->target.x = 0.5;
+    context->camera.y = context->target.y = 0.5;
     context->camera.vx = context->target.vx = 0.0;
     context->camera.vy = context->target.vy = 0.0;
     context->camera.ax = context->target.ax = 0.0;
@@ -532,5 +536,97 @@ context_target_accelerate(Context *context, double ax, double ay)
 void
 context_target_move(Context *context)
 {
+    /* Retrieve the old room location and the position within the room */
+    int ox, oy;
+    double ofx, ofy;
+    ox = (int)context->target.x;
+    oy = (int)context->target.y;
+    ofx = context->target.x - ox;
+    ofy = context->target.y - oy;
+
+    /* Calculate the new coordinates */
     context_object_move(&context->target, 0.2);
+
+    /* Retrieve the new room location and the position within the room */
+    int x, y;
+    double fx, fy;
+    x = (int)context->target.x;
+    y = (int)context->target.y;
+    fx = context->target.x - x;
+    fy = context->target.y - y;
+
+    /* Determine what edges we have moved into */
+    int edges = 0
+        | (fx < TARGET_MARGIN ? MAZE_WALL_LEFT : 0)
+        | (fx > ITARGET_MARGIN ? MAZE_WALL_RIGHT : 0)
+        | (fy < TARGET_MARGIN ? MAZE_WALL_UP : 0)
+        | (fy > ITARGET_MARGIN ? MAZE_WALL_DOWN : 0);
+
+    /* Handle bumping into walls of this room */
+    if (edges & MAZE_WALL_LEFT
+            && !maze_is_open_left(context->maze.data, x, y)) {
+        context->target.x = x + TARGET_MARGIN;
+        fx = TARGET_MARGIN;
+        edges &= ~MAZE_WALL_LEFT;
+    }
+    else if (edges & MAZE_WALL_RIGHT
+            && !maze_is_open_right(context->maze.data, x, y)) {
+        context->target.x = x + ITARGET_MARGIN;
+        fx = ITARGET_MARGIN;
+        edges &= ~MAZE_WALL_RIGHT;
+    }
+    if (edges & MAZE_WALL_UP
+            && !maze_is_open_up(context->maze.data, x, y)) {
+        context->target.y = y + TARGET_MARGIN;
+        fy = TARGET_MARGIN;
+        edges &= ~MAZE_WALL_UP;
+    }
+    else if (edges & MAZE_WALL_DOWN
+            && !maze_is_open_down(context->maze.data, x, y)) {
+        context->target.y = y + ITARGET_MARGIN;
+        fy = ITARGET_MARGIN;
+        edges &= ~MAZE_WALL_DOWN;
+    }
+
+    /* Handle bumping into corners */
+    if ((edges & MAZE_CORNER_UL) == MAZE_CORNER_UL) {
+        if (fx > fy) {
+            context->target.x = x + TARGET_MARGIN;
+            edges &= ~MAZE_WALL_LEFT;
+        }
+        else {
+            context->target.y = y + TARGET_MARGIN;
+            edges &= ~MAZE_WALL_UP;
+        }
+    }
+    else if ((edges & MAZE_CORNER_UR) == MAZE_CORNER_UR) {
+        if (1.0 - fx > fy) {
+            context->target.x = x + ITARGET_MARGIN;
+            edges &= ~MAZE_WALL_RIGHT;
+        }
+        else {
+            context->target.y = y + TARGET_MARGIN;
+            edges &= ~MAZE_WALL_UP;
+        }
+    }
+    else if ((edges & MAZE_CORNER_DL) == MAZE_CORNER_DL) {
+        if (1.0 - fx < fy) {
+            context->target.x = x + TARGET_MARGIN;
+            edges &= ~MAZE_WALL_LEFT;
+        }
+        else {
+            context->target.y = y + ITARGET_MARGIN;
+            edges &= ~MAZE_WALL_DOWN;
+        }
+    }
+    else if ((edges & MAZE_CORNER_DR) == MAZE_CORNER_DR) {
+        if (fx < fy) {
+            context->target.x = x + ITARGET_MARGIN;
+            edges &= ~MAZE_WALL_RIGHT;
+        }
+        else {
+            context->target.y = y + ITARGET_MARGIN;
+            edges &= ~MAZE_WALL_DOWN;
+        }
+    }
 }
