@@ -218,6 +218,12 @@ context_initialize(Context *context,
         return 0;
     }
     maze_initialize_randomized_prim(context->maze.data, NULL, NULL);
+    maze_door_open(context->maze.data,
+        0, 0,
+        MAZE_WALL_LEFT);
+    maze_door_open(context->maze.data,
+        context->maze.data->width - 1, context->maze.data->height - 1,
+        MAZE_WALL_RIGHT);
 
     /* Initialise the stereogram z-buffer */
     context->stereo.zbuffer = stereo_zbuffer_create(image_width, image_height,
@@ -291,7 +297,7 @@ context_initialize(Context *context,
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     /* Initialise the camera and target */
-    context->camera.x = context->target.x = 0.5;
+    context->camera.x = context->target.x = 0.0;
     context->camera.y = context->target.y = 0.5;
     context->camera.vx = context->target.vx = 0.0;
     context->camera.vy = context->target.vy = 0.0;
@@ -546,6 +552,13 @@ context_target_move(Context *context)
 
     /* Calculate the new coordinates */
     context_object_move(&context->target, 0.2);
+    if (context->target.x < -0.5) {
+        context->target.x = -0.5;
+    }
+    else if (context->target.x >= context->maze.data->width - 0.01) {
+        /* Make sure (int)context->target.x < context->maze.data->width */
+        context->target.x = context->maze.data->width - 0.01;
+    }
 
     /* Retrieve the new room location and the position within the room */
     int x, y;
