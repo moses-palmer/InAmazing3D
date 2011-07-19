@@ -589,7 +589,8 @@ context_target_move(Context *context)
     }
 
     /* Handle bumping into corners */
-    if ((edges & MAZE_CORNER_UL) == MAZE_CORNER_UL) {
+    if ((edges & MAZE_CORNER_UP_LEFT) == MAZE_CORNER_UP_LEFT
+            && maze_is_corner_up_left_out(context->maze.data, x, y)) {
         if (fx > fy) {
             context->target.x = x + TARGET_MARGIN;
             edges &= ~MAZE_WALL_LEFT;
@@ -599,7 +600,8 @@ context_target_move(Context *context)
             edges &= ~MAZE_WALL_UP;
         }
     }
-    else if ((edges & MAZE_CORNER_UR) == MAZE_CORNER_UR) {
+    else if ((edges & MAZE_CORNER_UP_RIGHT) == MAZE_CORNER_UP_RIGHT
+            && maze_is_corner_up_right_out(context->maze.data, x, y)) {
         if (1.0 - fx > fy) {
             context->target.x = x + ITARGET_MARGIN;
             edges &= ~MAZE_WALL_RIGHT;
@@ -609,7 +611,8 @@ context_target_move(Context *context)
             edges &= ~MAZE_WALL_UP;
         }
     }
-    else if ((edges & MAZE_CORNER_DL) == MAZE_CORNER_DL) {
+    else if ((edges & MAZE_CORNER_DOWN_LEFT) == MAZE_CORNER_DOWN_LEFT
+            && maze_is_corner_down_left_out(context->maze.data, x, y)) {
         if (1.0 - fx < fy) {
             context->target.x = x + TARGET_MARGIN;
             edges &= ~MAZE_WALL_LEFT;
@@ -619,7 +622,8 @@ context_target_move(Context *context)
             edges &= ~MAZE_WALL_DOWN;
         }
     }
-    else if ((edges & MAZE_CORNER_DR) == MAZE_CORNER_DR) {
+    else if ((edges & MAZE_CORNER_DOWN_RIGHT) == MAZE_CORNER_DOWN_RIGHT
+            && maze_is_corner_down_right_out(context->maze.data, x, y)) {
         if (fx < fy) {
             context->target.x = x + ITARGET_MARGIN;
             edges &= ~MAZE_WALL_RIGHT;
