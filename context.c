@@ -342,7 +342,10 @@ static void
 lights_setup(Context *context, int enable)
 {
     if (enable) {
-        GLfloat light_position[] = {0.0, 0.0, -1.0, 1.0};
+        GLfloat light_position[] = {
+            -2.0 * context->camera.ax,
+            -2.0 * context->camera.ay,
+            -1.0, 1.0};
         static GLfloat light_ambient[] = {0.0, 0.0, 0.0, 1.0};
         static GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};
         static GLfloat light_specular[] = {1.0, 1.0, 1.0, 1.0};
