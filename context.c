@@ -1,6 +1,9 @@
 #include <math.h>
 #include <stdlib.h>
 
+#define ARGUMENTS_READ_ONLY
+#include "arguments/arguments.h"
+
 #include "context.h"
 
 /* The strength values for the different effects */
@@ -197,10 +200,8 @@ mgluLookAt(GLfloat eyex, GLfloat eyey, GLfloat eyez,
 
 int
 context_initialize(Context *context,
-    unsigned int maze_width, unsigned int maze_height,
     unsigned int image_width, unsigned int image_height,
-    unsigned int screen_width, unsigned int screen_height,
-    double shortcut_ratio)
+    unsigned int screen_width, unsigned int screen_height)
 {
     double luminance_strengths1[5];
     double luminance_strengths2[5];
@@ -214,7 +215,8 @@ context_initialize(Context *context,
     }
 
     /* Initialise the maze */
-    context->maze.data = maze_create(maze_width, maze_height);
+    context->maze.data = maze_create(ARGUMENT_VALUE(maze_size).width,
+        ARGUMENT_VALUE(maze_size).height);
     if (!context->maze.data) {
         return 0;
     }
@@ -226,9 +228,11 @@ context_initialize(Context *context,
         context->maze.data->width - 1, context->maze.data->height - 1,
         MAZE_WALL_RIGHT);
 
-    for (i = 0; i < 4 * maze_width * maze_height * shortcut_ratio; i++) {
-        int x = rand() % maze_width;
-        int y = rand() % maze_height;
+    for (i = 0;
+            i < 4 * ARGUMENT_VALUE(maze_size).width * ARGUMENT_VALUE(maze_size).height * ARGUMENT_VALUE(shortcut_ratio);
+            i++) {
+        int x = rand() % ARGUMENT_VALUE(maze_size).width;
+        int y = rand() % ARGUMENT_VALUE(maze_size).height;
         int wall = rand() % 4;
 
         switch (wall) {
@@ -238,7 +242,7 @@ context_initialize(Context *context,
             }
             break;
         case 1:
-            if (x < maze_width - 1) {
+            if (x < ARGUMENT_VALUE(maze_size).width - 1) {
                 maze_door_open(context->maze.data, x, y, MAZE_WALL_RIGHT);
             }
             break;
@@ -248,7 +252,7 @@ context_initialize(Context *context,
             }
             break;
         case 3:
-            if (y < maze_height - 1) {
+            if (y < ARGUMENT_VALUE(maze_size).height - 1) {
                 maze_door_open(context->maze.data, x, y, MAZE_WALL_DOWN);
             }
             break;

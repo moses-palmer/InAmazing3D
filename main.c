@@ -7,9 +7,9 @@
     #include <SDL.h>
 #endif
 
-#include "arguments/arguments.h"
-
 #include "context.h"
+
+#include "arguments/arguments.h"
 
 /**
  * The width of the stereogram image.
@@ -218,9 +218,8 @@ main(int argc, char *argv[],
     /* Initialise the context */
     Context context;
     memset(&context, 0, sizeof(context));
-    if (!context_initialize(&context, maze_size.width, maze_size.height,
-            IMAGE_WIDTH, IMAGE_HEIGHT, vinfo->current_w, vinfo->current_h,
-            shortcut_ratio)) {
+    if (!context_initialize(&context, IMAGE_WIDTH, IMAGE_HEIGHT,
+            vinfo->current_w, vinfo->current_h)) {
         printf("Unable to initialise context.\n");
         return 1;
     }

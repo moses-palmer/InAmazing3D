@@ -124,23 +124,17 @@ typedef struct {
  *
  * @param context
  *     The context to initialise.
- * @param maze_width, maze_height
- *     The dimensions of the maze.
  * @param image_width, image_height
  *     The dimensions of the stereogram image.
  * @param screen_width, screen_height
  *     The dimensions of the screen.
- * @param shortcut_ratio
- *     The shortcut ratio for the maze.
  * @return non-zero upon success and 0 otherwise
  * @see context_free
  */
 int
 context_initialize(Context *context,
-    unsigned int maze_width, unsigned int maze_height,
     unsigned int image_width, unsigned int image_height,
-    unsigned int screen_width, unsigned int screen_height,
-    double shortcut_ratio);
+    unsigned int screen_width, unsigned int screen_height);
 
 /**
  * Releases a previously created context.
