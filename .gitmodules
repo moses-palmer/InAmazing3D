@@ -4,3 +4,6 @@
 [submodule "libstereo"]
 	path = libstereo
 	url = git@github.com:moses-palmer/libstereo
+[submodule "arguments"]
+	path = arguments
+	url = git@github.com:moses-palmer/arguments

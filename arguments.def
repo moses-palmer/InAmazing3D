@@ -1,0 +1,28 @@
+#ifndef ARGUMENT_HELPERS
+#define ARGUMENT_HELPERS
+
+#define ARGUMENTS_NO_SETUP
+#define ARGUMENTS_NO_TEARDOWN
+
+#define ARGUMENTS_HELP \
+    "This application allows exploring a randomly generated maze as an " \
+    "autostereogram interactively."
+
+#endif
+
+ARGUMENT(struct { int width; int height; }, maze_size, "-m",
+    "<width> <height>\n"
+    "Sets the size of the maze. The width and height must be greater than 1.\n"
+    "\n"
+    "Default: 30 20",
+    2, ARGUMENT_IS_OPTIONAL,
+
+    target->width = 30;
+    target->height = 20;
+    ,
+
+    target->width = atoi(value_strings[0]);
+    target->height = atoi(value_strings[1]);
+    is_valid = target->width > 1 && target->height > 1;
+    ,
+)

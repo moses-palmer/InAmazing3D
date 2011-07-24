@@ -41,11 +41,12 @@
 			<Add directory="libstereo" />
 			<Add directory="libmaze" />
 		</Linker>
-		<Unit filename="main.c">
+		<Unit filename="arguments.def" />
+		<Unit filename="context.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="context.h" />
-		<Unit filename="context.c">
+		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
