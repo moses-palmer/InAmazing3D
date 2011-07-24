@@ -225,6 +225,35 @@ context_initialize(Context *context,
         context->maze.data->width - 1, context->maze.data->height - 1,
         MAZE_WALL_RIGHT);
 
+    for (i = 0; i < 4 * maze_width * maze_height * MAZE_SHORTCUT_RATIO; i++) {
+        int x = rand() % maze_width;
+        int y = rand() % maze_height;
+        int wall = rand() % 4;
+
+        switch (wall) {
+        case 0:
+            if (x > 0) {
+                maze_door_open(context->maze.data, x, y, MAZE_WALL_LEFT);
+            }
+            break;
+        case 1:
+            if (x < maze_width - 1) {
+                maze_door_open(context->maze.data, x, y, MAZE_WALL_RIGHT);
+            }
+            break;
+        case 2:
+            if (y > 0) {
+                maze_door_open(context->maze.data, x, y, MAZE_WALL_UP);
+            }
+            break;
+        case 3:
+            if (y < maze_height - 1) {
+                maze_door_open(context->maze.data, x, y, MAZE_WALL_DOWN);
+            }
+            break;
+        }
+    }
+
     /* Initialise the stereogram z-buffer */
     context->stereo.zbuffer = stereo_zbuffer_create(image_width, image_height,
         1);

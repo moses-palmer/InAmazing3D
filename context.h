@@ -21,6 +21,16 @@
 #define MAZE_SLOPE_WIDTH 0.25
 
 /**
+ * The shortcut ratio for the maze.
+ *
+ * When the maze has been generated, a number of walls are opened. The walls
+ * are selected randomly, and if they are not on the edge of the maze, they are
+ * opened. The number of attempts is 4 * maze-width * maze-height
+ * * MAZE_SHORTCUT_RATIO.
+ */
+#define MAZE_SHORTCUT_RATIO 0.05
+
+/**
  * The width of the pattern used to render a stereogram.
  */
 #define PATTERN_WIDTH 45
