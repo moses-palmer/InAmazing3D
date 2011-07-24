@@ -21,16 +21,6 @@
 #define MAZE_SLOPE_WIDTH 0.25
 
 /**
- * The shortcut ratio for the maze.
- *
- * When the maze has been generated, a number of walls are opened. The walls
- * are selected randomly, and if they are not on the edge of the maze, they are
- * opened. The number of attempts is 4 * maze-width * maze-height
- * * MAZE_SHORTCUT_RATIO.
- */
-#define MAZE_SHORTCUT_RATIO 0.05
-
-/**
  * The width of the pattern used to render a stereogram.
  */
 #define PATTERN_WIDTH 32
@@ -140,6 +130,8 @@ typedef struct {
  *     The dimensions of the stereogram image.
  * @param screen_width, screen_height
  *     The dimensions of the screen.
+ * @param shortcut_ratio
+ *     The shortcut ratio for the maze.
  * @return non-zero upon success and 0 otherwise
  * @see context_free
  */
@@ -147,7 +139,8 @@ int
 context_initialize(Context *context,
     unsigned int maze_width, unsigned int maze_height,
     unsigned int image_width, unsigned int image_height,
-    unsigned int screen_width, unsigned int scren_height);
+    unsigned int screen_width, unsigned int screen_height,
+    double shortcut_ratio);
 
 /**
  * Releases a previously created context.

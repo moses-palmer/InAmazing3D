@@ -199,7 +199,8 @@ int
 context_initialize(Context *context,
     unsigned int maze_width, unsigned int maze_height,
     unsigned int image_width, unsigned int image_height,
-    unsigned int screen_width, unsigned int screen_height)
+    unsigned int screen_width, unsigned int screen_height,
+    double shortcut_ratio)
 {
     double luminance_strengths1[5];
     double luminance_strengths2[5];
@@ -225,7 +226,7 @@ context_initialize(Context *context,
         context->maze.data->width - 1, context->maze.data->height - 1,
         MAZE_WALL_RIGHT);
 
-    for (i = 0; i < 4 * maze_width * maze_height * MAZE_SHORTCUT_RATIO; i++) {
+    for (i = 0; i < 4 * maze_width * maze_height * shortcut_ratio; i++) {
         int x = rand() % maze_width;
         int y = rand() % maze_height;
         int wall = rand() % 4;

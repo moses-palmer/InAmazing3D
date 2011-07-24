@@ -174,7 +174,8 @@ opengl_initialize(int width, int height)
 
 static int
 main(int argc, char *argv[],
-    maze_size_t maze_size)
+    maze_size_t maze_size,
+    double shortcut_ratio)
 {
     /* Initialize SDL */
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -218,7 +219,8 @@ main(int argc, char *argv[],
     Context context;
     memset(&context, 0, sizeof(context));
     if (!context_initialize(&context, maze_size.width, maze_size.height,
-            IMAGE_WIDTH, IMAGE_HEIGHT, vinfo->current_w, vinfo->current_h)) {
+            IMAGE_WIDTH, IMAGE_HEIGHT, vinfo->current_w, vinfo->current_h,
+            shortcut_ratio)) {
         printf("Unable to initialise context.\n");
         return 1;
     }

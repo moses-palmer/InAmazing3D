@@ -26,3 +26,23 @@ ARGUMENT(struct { int width; int height; }, maze_size, "-m",
     is_valid = target->width > 1 && target->height > 1;
     ,
 )
+
+ARGUMENT(double, shortcut_ratio, "-s",
+    "<value>\n"
+    "Sets the shortcut ratio for the maze.\n"
+    "\n"
+    "When the maze has been generated, a number of walls are opened. The walls "
+    "are selected randomly, and if they are not on the edge of the maze, they "
+    "are opened. The number of attempts is 4 * <maze-width> * <maze-height> "
+    "* <value>.\n"
+    "Default: 0.0",
+    1, ARGUMENT_IS_OPTIONAL,
+
+    *target = 0.0;
+    ,
+
+    char *end;
+    *target = strtod(value_strings[0], &end);
+    is_valid = *end == 0;
+    ,
+)
