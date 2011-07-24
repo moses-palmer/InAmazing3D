@@ -33,12 +33,12 @@
 /**
  * The width of the pattern used to render a stereogram.
  */
-#define PATTERN_WIDTH 45
+#define PATTERN_WIDTH 32
 
 /**
  * The height of the pattern used to render a stereogram.
  */
-#define PATTERN_HEIGHT 45
+#define PATTERN_HEIGHT PATTERN_WIDTH
 
 /**
  * The z-coordinate of the camera.
