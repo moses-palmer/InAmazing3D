@@ -229,7 +229,9 @@ context_initialize(Context *context,
         MAZE_WALL_RIGHT);
 
     for (i = 0;
-            i < 4 * ARGUMENT_VALUE(maze_size).width * ARGUMENT_VALUE(maze_size).height * ARGUMENT_VALUE(shortcut_ratio);
+            i < 4 * ARGUMENT_VALUE(maze_size).width
+                * ARGUMENT_VALUE(maze_size).height
+                * ARGUMENT_VALUE(shortcut_ratio);
             i++) {
         int x = rand() % ARGUMENT_VALUE(maze_size).width;
         int y = rand() % ARGUMENT_VALUE(maze_size).height;
