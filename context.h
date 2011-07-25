@@ -11,11 +11,6 @@
 #include <stereo.h>
 
 /**
- * The width of the slopes of maze walls.
- */
-#define MAZE_SLOPE_WIDTH 0.25
-
-/**
  * The width of the pattern used to render a stereogram.
  */
 #define PATTERN_WIDTH 32

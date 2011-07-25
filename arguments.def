@@ -48,12 +48,36 @@ ARGUMENT(double, wall_width, "-w",
     char *end;
     *target = strtod(value_strings[0], &end);
     is_valid = *end == 0 && *target >= 0.0
-        && *target + MAZE_SLOPE_WIDTH < 0.5;
+        && *target < 0.5;
 
     if (!is_valid) {
         fprintf(stderr, "Invalid value for wall-width (%s): the width must be "
+            "a number between 0.0 and 0.5\n",
+            value_strings[0]);
+    }
+    ,
+)
+
+ARGUMENT(double, slope_width, ARGUMENT_NO_SHORT_OPTION,
+    "<value>\n"
+    "Sets the width of the slope of walls in the maze.\n"
+    "\n"
+    "The slope width and the wall width together must not exceed 0.5.\n"
+    "Default: 0.25",
+    1, ARGUMENT_IS_OPTIONAL,
+
+    *target = 0.25;
+    ,
+
+    char *end;
+    *target = strtod(value_strings[0], &end);
+    is_valid = *end == 0 && *target >= 0.0
+        && *target + ARGUMENT_VALUE(wall_width) < 0.5;
+
+    if (!is_valid) {
+        fprintf(stderr, "Invalid value for slope-width (%s): the width must be "
             "a number between 0.0 and %g\n",
-            value_strings[0], 0.5 - MAZE_SLOPE_WIDTH);
+            value_strings[0], 0.5 - ARGUMENT_VALUE(wall_width));
     }
     ,
 )

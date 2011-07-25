@@ -176,6 +176,7 @@ static int
 main(int argc, char *argv[],
     maze_size_t maze_size,
     double wall_width,
+    double slope_width,
     double shortcut_ratio)
 {
     /* Initialize SDL */
