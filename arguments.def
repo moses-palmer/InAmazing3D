@@ -24,6 +24,12 @@ ARGUMENT(struct { int width; int height; }, maze_size, "-m",
     target->width = atoi(value_strings[0]);
     target->height = atoi(value_strings[1]);
     is_valid = target->width > 1 && target->height > 1;
+
+    if (!is_valid) {
+        fprintf(stderr, "Invalid value for maze-size (%s %s): dimensions must "
+            "be integers larger than 1\n",
+            value_strings[0], value_strings[1]);
+    }
     ,
 )
 
@@ -43,6 +49,12 @@ ARGUMENT(double, shortcut_ratio, "-s",
 
     char *end;
     *target = strtod(value_strings[0], &end);
-    is_valid = *end == 0;
+    is_valid = *end == 0 && *target >= 0.0 && *target <= 1.0;
+
+    if (!is_valid) {
+        fprintf(stderr, "Invalid value for shortcut_ratio (%s): the ratio must "
+            "be a number between 0.0 and 1.0\n",
+            value_strings[0]);
+    }
     ,
 )
