@@ -301,7 +301,8 @@ context_initialize(Context *context,
 
     /* Initialise the stereogram image */
     context->stereo.image = stereo_image_create_from_zbuffer(
-        context->stereo.zbuffer, pattern, 10.0, 1);
+        context->stereo.zbuffer, pattern, ARGUMENT_VALUE(stereogram_strength),
+        1);
 
     /* Automatically update the pattern every frame */
     context->stereo.update_pattern = 1;

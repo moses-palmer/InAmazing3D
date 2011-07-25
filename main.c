@@ -177,7 +177,8 @@ main(int argc, char *argv[],
     maze_size_t maze_size,
     double wall_width,
     double slope_width,
-    double shortcut_ratio)
+    double shortcut_ratio,
+    double stereogram_strength)
 {
     /* Initialize SDL */
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {

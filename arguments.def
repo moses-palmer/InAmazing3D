@@ -107,3 +107,26 @@ ARGUMENT(double, shortcut_ratio, "-s",
     }
     ,
 )
+
+ARGUMENT(double, stereogram_strength, ARGUMENT_NO_SHORT_OPTION,
+    "<value>\n"
+    "Sets the strength of the stereogram effect.\n"
+    "\n"
+    "Negative values will invert the depth.\n"
+    "Default: 10.0",
+    1, ARGUMENT_IS_OPTIONAL,
+
+    *target = 10.0;
+    ,
+
+    char *end;
+    *target = strtod(value_strings[0], &end);
+    is_valid = *end == 0;
+
+    if (!is_valid) {
+        fprintf(stderr, "Invalid value for stereogram-strength (%s): the value "
+            "must be a number\n",
+            value_strings[0]);
+    }
+    ,
+)
