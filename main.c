@@ -175,6 +175,7 @@ opengl_initialize(int width, int height)
 static int
 main(int argc, char *argv[],
     maze_size_t maze_size,
+    double wall_width,
     double shortcut_ratio)
 {
     /* Initialize SDL */

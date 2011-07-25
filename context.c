@@ -18,7 +18,7 @@
 #define SPHERE_PRECISION 20
 
 /** The margin of the target */
-#define TARGET_MARGIN (MAZE_WALL_WIDTH + MAZE_SLOPE_WIDTH)
+#define TARGET_MARGIN (ARGUMENT_VALUE(wall_width) + MAZE_SLOPE_WIDTH)
 #define ITARGET_MARGIN (1.0 - TARGET_MARGIN)
 
 /**
@@ -481,8 +481,8 @@ context_render_stereo(Context *context)
     glViewport(0, 0, width, height);
 
     /* Draw the maze with a floor */
-    maze_render_gl(context->maze.data, MAZE_WALL_WIDTH, MAZE_SLOPE_WIDTH,
-        1, (int)context->camera.x, (int)context->camera.y, 5);
+    maze_render_gl(context->maze.data, ARGUMENT_VALUE(wall_width),
+        MAZE_SLOPE_WIDTH, 1, (int)context->camera.x, (int)context->camera.y, 5);
     context_object_render(context);
 
     /* Retrieve the depth data to the z-buffer */
@@ -542,8 +542,8 @@ context_render_plain(Context *context)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDisable(GL_TEXTURE_2D);
-    maze_render_gl(context->maze.data, MAZE_WALL_WIDTH, MAZE_SLOPE_WIDTH,
-        1, (int)context->camera.x, (int)context->camera.y, 5);
+    maze_render_gl(context->maze.data, ARGUMENT_VALUE(wall_width),
+        MAZE_SLOPE_WIDTH, 1, (int)context->camera.x, (int)context->camera.y, 5);
     context_object_render(context);
 }
 

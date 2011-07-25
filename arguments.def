@@ -33,6 +33,31 @@ ARGUMENT(struct { int width; int height; }, maze_size, "-m",
     ,
 )
 
+ARGUMENT(double, wall_width, "-w",
+    "<value>\n"
+    "Sets the width of walls in the maze.\n"
+    "\n"
+    "A value of 0.5 would cause the walls on the different sides of a room to "
+    "run into each other and leave no room for the target.\n"
+    "Default: 0.05",
+    1, ARGUMENT_IS_OPTIONAL,
+
+    *target = 0.05;
+    ,
+
+    char *end;
+    *target = strtod(value_strings[0], &end);
+    is_valid = *end == 0 && *target >= 0.0
+        && *target + MAZE_SLOPE_WIDTH < 0.5;
+
+    if (!is_valid) {
+        fprintf(stderr, "Invalid value for wall-width (%s): the width must be "
+            "a number between 0.0 and %g\n",
+            value_strings[0], 0.5 - MAZE_SLOPE_WIDTH);
+    }
+    ,
+)
+
 ARGUMENT(double, shortcut_ratio, "-s",
     "<value>\n"
     "Sets the shortcut ratio for the maze.\n"

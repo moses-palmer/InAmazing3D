@@ -11,11 +11,6 @@
 #include <stereo.h>
 
 /**
- * The width of maze walls.
- */
-#define MAZE_WALL_WIDTH 0.05
-
-/**
  * The width of the slopes of maze walls.
  */
 #define MAZE_SLOPE_WIDTH 0.25
