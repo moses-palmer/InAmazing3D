@@ -151,15 +151,26 @@ void
 context_camera_move(Context *context);
 
 /**
- * Updates the acceleration of the context target.
+ * Updates the horizontal acceleration of the context target.
  *
  * @param context
  *     The context whose target to manipulate.
- * @param ax, ay
- *     The horizontal and vertical acceleration.
+ * @param a
+ *     The acceleration.
  */
 void
-context_target_accelerate(Context *context, double ax, double ay);
+context_target_accelerate_x(Context *context, double a);
+
+/**
+ * Updates the vertical acceleration of the context target.
+ *
+ * @param context
+ *     The context whose target to manipulate.
+ * @param a
+ *     The acceleration.
+ */
+void
+context_target_accelerate_y(Context *context, double a);
 
 /**
  * Moves the target.

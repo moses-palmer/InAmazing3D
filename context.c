@@ -575,10 +575,15 @@ context_camera_move(Context *context)
 }
 
 void
-context_target_accelerate(Context *context, double ax, double ay)
+context_target_accelerate_x(Context *context, double a)
 {
-    context->target.ax = ax;
-    context->target.ay = ay;
+    context->target.ax = a;
+}
+
+void
+context_target_accelerate_y(Context *context, double a)
+{
+    context->target.ay = a;
 }
 
 void

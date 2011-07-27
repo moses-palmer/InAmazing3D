@@ -29,7 +29,7 @@
 /**
  * The acceleration caused by the joystick.
  */
-#define JOYSTICK_ACCELERATION 0.2
+#define ACCELERATION 0.2
 
 /**
  * The user event code that signals that the display should be refreshed.
@@ -121,13 +121,17 @@ handle_events(Context *context)
             break;
 
         case SDL_JOYAXISMOTION:
-            context_target_accelerate(context,
-                (event.jaxis.axis == 0)
-                    ? JOYSTICK_ACCELERATION * (double)event.jaxis.value / 32768
-                    : context->target.ax,
-                (event.jaxis.axis == 1)
-                    ? JOYSTICK_ACCELERATION * (double)event.jaxis.value / 32768
-                    : context->target.ay);
+            switch (event.jaxis.axis) {
+            case 0:
+                context_target_accelerate_x(context,
+                    ACCELERATION * (double)event.jaxis.value / 32768);
+                break;
+
+            case 1:
+                context_target_accelerate_y(context,
+                    ACCELERATION * (double)event.jaxis.value / 32768);
+                break;
+            }
             break;
 
         case SDL_USEREVENT:
