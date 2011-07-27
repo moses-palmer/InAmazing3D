@@ -27,7 +27,7 @@
 #define TIMER_INTERVAL 40
 
 /**
- * The acceleration caused by the joystick.
+ * The acceleration caused by the keys and the joystick.
  */
 #define ACCELERATION 0.2
 
@@ -115,10 +115,56 @@ handle_events(Context *context)
                     !context->stereo.update_pattern;
                 break;
 
+            case SDLK_UP:
+                context_target_accelerate_y(context, -ACCELERATION);
+                break;
+
+            case SDLK_DOWN:
+                context_target_accelerate_y(context, ACCELERATION);
+                break;
+
+            case SDLK_LEFT:
+                context_target_accelerate_x(context, -ACCELERATION);
+                break;
+
+            case SDLK_RIGHT:
+                context_target_accelerate_x(context, ACCELERATION);
+                break;
+
             /* Prevent compiler warning */
             default: break;
             }
             break;
+
+        case SDL_KEYUP:
+            switch (event.key.keysym.sym) {
+            case SDLK_UP:
+                if (context->target.ay < 0.0) {
+                    context_target_accelerate_y(context, 0.0);
+                }
+                break;
+
+            case SDLK_DOWN:
+                if (context->target.ay > 0.0) {
+                    context_target_accelerate_y(context, 0.0);
+                }
+                break;
+
+            case SDLK_LEFT:
+                if (context->target.ax < 0.0) {
+                    context_target_accelerate_x(context, 0.0);
+                }
+                break;
+
+            case SDLK_RIGHT:
+                if (context->target.ax > 0.0) {
+                    context_target_accelerate_x(context, 0.0);
+                }
+                break;
+
+            /* Prevent compiler warning */
+            default: break;
+            }
 
         case SDL_JOYAXISMOTION:
             switch (event.jaxis.axis) {
