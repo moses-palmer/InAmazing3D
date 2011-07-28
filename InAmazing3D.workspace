@@ -5,7 +5,10 @@
 			<Depends filename="libstereo/stereo.cbp" />
 			<Depends filename="libmaze/maze.cbp" />
 		</Project>
-		<Project filename="libstereo/stereo.cbp" />
+		<Project filename="libstereo/stereo.cbp">
+			<Depends filename="libpara/para.cbp" />
+		</Project>
 		<Project filename="libmaze/maze.cbp" />
+		<Project filename="libpara/para.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

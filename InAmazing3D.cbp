@@ -33,13 +33,16 @@
 			<Add option="`sdl-config --cflags`" />
 			<Add directory="libstereo" />
 			<Add directory="libmaze" />
+			<Add directory="libpara" />
 		</Compiler>
 		<Linker>
 			<Add option="`sdl-config --libs`" />
 			<Add library="maze" />
 			<Add library="stereo" />
+			<Add library="para" />
 			<Add directory="libstereo" />
 			<Add directory="libmaze" />
+			<Add directory="libpara" />
 		</Linker>
 		<Unit filename="arguments.def" />
 		<Unit filename="context.c">
