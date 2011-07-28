@@ -10,6 +10,8 @@
 
 #endif
 
+ARGUMENT_SECTION("Maze options")
+
 ARGUMENT(struct { int width; int height; }, maze_size, "-m",
     "<width> <height>\n"
     "Sets the size of the maze. The width and height must be greater than 1.\n"
@@ -107,6 +109,8 @@ ARGUMENT(double, shortcut_ratio, "-s",
     }
     ,
 )
+
+ARGUMENT_SECTION("Stereogram options")
 
 ARGUMENT(double, stereogram_strength, ARGUMENT_NO_SHORT_OPTION,
     "<value>\n"
