@@ -41,6 +41,7 @@ ARGUMENT(double, wall_width, "-w",
     "\n"
     "A value of 0.5 would cause the walls on the different sides of a room to "
     "run into each other and leave no room for the target.\n"
+    "\n"
     "Default: 0.05",
     1, ARGUMENT_IS_OPTIONAL,
 
@@ -65,6 +66,7 @@ ARGUMENT(double, slope_width, ARGUMENT_NO_SHORT_OPTION,
     "Sets the width of the slope of walls in the maze.\n"
     "\n"
     "The slope width and the wall width together must not exceed 0.5.\n"
+    "\n"
     "Default: 0.25",
     1, ARGUMENT_IS_OPTIONAL,
 
@@ -92,6 +94,7 @@ ARGUMENT(double, shortcut_ratio, "-s",
     "are selected randomly, and if they are not on the edge of the maze, they "
     "are opened. The number of attempts is 4 * <maze-width> * <maze-height> "
     "* <value>.\n"
+    "\n"
     "Default: 0.0",
     1, ARGUMENT_IS_OPTIONAL,
 
@@ -117,6 +120,7 @@ ARGUMENT(double, stereogram_strength, ARGUMENT_NO_SHORT_OPTION,
     "Sets the strength of the stereogram effect.\n"
     "\n"
     "Negative values will invert the depth.\n"
+    "\n"
     "Default: 10.0",
     1, ARGUMENT_IS_OPTIONAL,
 
