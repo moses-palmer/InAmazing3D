@@ -1,23 +1,19 @@
 #include <math.h>
 #include <stdlib.h>
 
+#include "context.h"
+
 #define ARGUMENTS_READ_ONLY
 #include "arguments/arguments.h"
-
-#include "context.h"
 
 /* The strength values for the different effects */
 #define WAVE_STRENGTH_BASE 5.0
 #define WAVE_STRENGTH_EXTRA 8.0
-#define LUMINANCE_STRENGTH1_BASE 2.0
-#define LUMINANCE_STRENGTH1_EXTRA 4.0
-#define LUMINANCE_STRENGTH2_BASE 2.0
-#define LUMINANCE_STRENGTH2_EXTRA 4.0
 
-/** The precision of the sphere approximation */
+/* The precision of the sphere approximation */
 #define SPHERE_PRECISION 20
 
-/** The margin of the target */
+/* The margin of the target */
 #define TARGET_MARGIN (ARGUMENT_VALUE(wall_width) + ARGUMENT_VALUE(slope_width))
 #define ITARGET_MARGIN (1.0 - TARGET_MARGIN)
 
@@ -201,16 +197,15 @@ mgluLookAt(GLfloat eyex, GLfloat eyey, GLfloat eyez,
 int
 context_initialize(Context *context,
     unsigned int image_width, unsigned int image_height,
-    unsigned int screen_width, unsigned int screen_height)
+    unsigned int screen_width, unsigned int screen_height,
+    StereoPattern *pattern_base)
 {
-    double luminance_strengths1[5];
-    double luminance_strengths2[5];
     double wave_strengths[2 * 4];
     int i;
-    StereoPattern *pattern_base, *pattern;
+    StereoPattern *pattern;
 
     /* Make sure that the context is passed */
-    if (!context) {
+    if (!context || !pattern_base) {
         return 0;
     }
 
@@ -270,32 +265,9 @@ context_initialize(Context *context,
         wave_strengths[i] = WAVE_STRENGTH_BASE + WAVE_STRENGTH_EXTRA
             * (double)(rand() - RAND_MAX / 2) / RAND_MAX / (i + 1);
     }
-    for (i = 0; i < sizeof(luminance_strengths1) / sizeof(double); i++) {
-        luminance_strengths1[i] = LUMINANCE_STRENGTH1_BASE
-                + LUMINANCE_STRENGTH1_EXTRA
-            * (double)(rand() - RAND_MAX / 2) / RAND_MAX / (i + 1);
-    }
-    for (i = 0; i < sizeof(luminance_strengths2) / sizeof(double); i++) {
-        luminance_strengths2[i] = LUMINANCE_STRENGTH2_BASE
-                + LUMINANCE_STRENGTH2_EXTRA
-            * (double)(rand() - RAND_MAX / 2) / RAND_MAX / (i + 1);
-    }
-
-    /* Create the base image for the pattern */
-    pattern_base = stereo_pattern_create(PATTERN_WIDTH, PATTERN_HEIGHT);
-    stereo_pattern_effect_run(pattern_base, luminance,
-        sizeof(luminance_strengths1) / sizeof(double), luminance_strengths1,
-        PP_RED | PP_BLUE);
-    stereo_pattern_effect_run(pattern_base, luminance,
-        sizeof(luminance_strengths1) / sizeof(double), luminance_strengths1,
-        PP_RED);
-    stereo_pattern_effect_run(pattern_base, luminance,
-        sizeof(luminance_strengths2) / sizeof(double), luminance_strengths2,
-        PP_GREEN);
 
     /* Initialise the effect */
-    pattern = stereo_pattern_create(
-        PATTERN_WIDTH, PATTERN_HEIGHT);
+    pattern = stereo_pattern_create(pattern_base->width, pattern_base->height);
     context->stereo.effect = stereo_pattern_effect_wave(pattern,
         sizeof(wave_strengths) / sizeof(double) / 2, wave_strengths,
         pattern_base);

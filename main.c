@@ -241,7 +241,8 @@ main(int argc, char *argv[],
     double wall_width,
     double slope_width,
     double shortcut_ratio,
-    double stereogram_strength)
+    double stereogram_strength,
+    StereoPattern *pattern_image)
 {
     /* Initialize SDL */
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -292,10 +293,13 @@ main(int argc, char *argv[],
     Context context;
     memset(&context, 0, sizeof(context));
     if (!context_initialize(&context, IMAGE_WIDTH, IMAGE_HEIGHT,
-            vinfo->current_w, vinfo->current_h)) {
+            vinfo->current_w, vinfo->current_h, pattern_image)) {
         printf("Unable to initialise context.\n");
         return 1;
     }
+
+    /* Zero the cached value, since the pattern now is owned by the context */
+    ARGUMENT_VALUE(pattern_image) = NULL;
 
     /* Create the timer */
     SDL_TimerID timer = SDL_AddTimer(TIMER_INTERVAL, do_timer, NULL);

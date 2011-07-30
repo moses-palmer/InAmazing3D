@@ -8,6 +8,24 @@
     "This application allows exploring a randomly generated maze as an " \
     "autostereogram interactively."
 
+/* The strength values for the different effects */
+#define LUMINANCE_STRENGTH1_BASE 2.0
+#define LUMINANCE_STRENGTH1_EXTRA 4.0
+#define LUMINANCE_STRENGTH2_BASE 2.0
+#define LUMINANCE_STRENGTH2_EXTRA 4.0
+
+/**
+ * The width of the pattern used to render a stereogram when none is specified
+ * on the command line.
+ */
+#define PATTERN_WIDTH 32
+
+/**
+ * The height of the pattern used to render a stereogram when none is specified
+ * on the command line.
+ */
+#define PATTERN_HEIGHT PATTERN_WIDTH
+
 #endif
 
 ARGUMENT_SECTION("General options")
@@ -162,4 +180,55 @@ ARGUMENT(double, stereogram_strength, ARGUMENT_NO_SHORT_OPTION,
             value_strings[0]);
     }
     ,
+)
+
+ARGUMENT(StereoPattern*, pattern_image, "-p",
+    "<PNG image>\n"
+    "Sets the background pattern used for the stereogram effect.\n"
+    "\n"
+    "This must be a PNG image.\n"
+    "\n"
+    "If this is not specified, a random pattern will be generated.",
+    1, ARGUMENT_IS_OPTIONAL,
+
+    double luminance_strengths1[5];
+    double luminance_strengths2[5];
+    int i;
+
+    /* Randomise the effect parameters */
+    for (i = 0; i < sizeof(luminance_strengths1) / sizeof(double); i++) {
+        luminance_strengths1[i] = LUMINANCE_STRENGTH1_BASE
+                + LUMINANCE_STRENGTH1_EXTRA
+            * (double)(rand() - RAND_MAX / 2) / RAND_MAX / (i + 1);
+    }
+    for (i = 0; i < sizeof(luminance_strengths2) / sizeof(double); i++) {
+        luminance_strengths2[i] = LUMINANCE_STRENGTH2_BASE
+                + LUMINANCE_STRENGTH2_EXTRA
+            * (double)(rand() - RAND_MAX / 2) / RAND_MAX / (i + 1);
+    }
+
+    /* Create the base image for the pattern */
+    *target = stereo_pattern_create(PATTERN_WIDTH, PATTERN_HEIGHT);
+    stereo_pattern_effect_run(*target, luminance,
+        sizeof(luminance_strengths1) / sizeof(double), luminance_strengths1,
+        PP_RED | PP_BLUE);
+    stereo_pattern_effect_run(*target, luminance,
+        sizeof(luminance_strengths1) / sizeof(double), luminance_strengths1,
+        PP_RED);
+    stereo_pattern_effect_run(*target, luminance,
+        sizeof(luminance_strengths2) / sizeof(double), luminance_strengths2,
+        PP_GREEN);
+    ,
+
+    *target = stereo_pattern_create_from_png_file(value_strings[0]);
+    is_valid = *target != NULL;
+
+    if (!is_valid) {
+        fprintf(stderr, "Invalid value for pattern-image (%s): the value must "
+            "be a PNG image\n",
+            value_strings[0]);
+    }
+    ,
+
+    stereo_pattern_free(*target);
 )

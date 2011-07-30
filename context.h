@@ -11,16 +11,6 @@
 #include <stereo.h>
 
 /**
- * The width of the pattern used to render a stereogram.
- */
-#define PATTERN_WIDTH 32
-
-/**
- * The height of the pattern used to render a stereogram.
- */
-#define PATTERN_HEIGHT PATTERN_WIDTH
-
-/**
  * The z-coordinate of the camera.
  */
 #define CAMERA_Z 3.5
@@ -118,13 +108,18 @@ typedef struct {
  *     The dimensions of the stereogram image.
  * @param screen_width, screen_height
  *     The dimensions of the screen.
+ * @param pattern_base
+ *     The background pattern for the stereogram. If this function returns
+ *     non-zero, ownership of this pattern is assumed by the context, and it
+ *     should not be freed.
  * @return non-zero upon success and 0 otherwise
  * @see context_free
  */
 int
 context_initialize(Context *context,
     unsigned int image_width, unsigned int image_height,
-    unsigned int screen_width, unsigned int screen_height);
+    unsigned int screen_width, unsigned int screen_height,
+    StereoPattern *pattern_base);
 
 /**
  * Releases a previously created context.
