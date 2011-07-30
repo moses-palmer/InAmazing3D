@@ -27,6 +27,12 @@
 #define TIMER_INTERVAL 40
 
 /**
+ * The number of milliseconds late a render event may happen before rendering is
+ * ignored for the current frame.
+ */
+#define TIMER_MARGIN 10
+
+/**
  * The acceleration caused by the keys and the joystick.
  */
 #define ACCELERATION 0.2
@@ -71,10 +77,16 @@ do_timer(Uint32 interval, void *dummy)
 static void
 do_display(Context *context)
 {
+    static Uint32 last_ticks = 0;
+    Uint32 current_ticks = SDL_GetTicks();
     glLoadIdentity();
 
-    /* Render the context */
-    context_render(context);
+    /* Render the context if we have not missed the render window */
+    if (!last_ticks
+            || current_ticks - last_ticks < TIMER_INTERVAL + TIMER_MARGIN) {
+        context_render(context);
+    }
+    last_ticks = current_ticks;
 
     /* Update the target and camera */
     context_target_move(context);
