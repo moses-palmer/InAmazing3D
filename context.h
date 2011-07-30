@@ -18,7 +18,7 @@
 /**
  * The z-coordinate of the target.
  */
-#define TARGET_Z 0.2
+#define TARGET_Z 0.7
 
 /**
  * The properties of an object in 2D space.

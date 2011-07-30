@@ -74,7 +74,7 @@ context_object_render(const Context *context)
     glPushMatrix();
 
     glTranslatef(context->target.x,
-        context->maze.data->height - context->target.y, 0.7);
+        context->maze.data->height - context->target.y, TARGET_Z);
     glScalef(0.2, 0.2, 0.2);
 
     for (i = 0; i < SPHERE_PRECISION / 2; i++) {
