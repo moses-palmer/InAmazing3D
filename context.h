@@ -123,6 +123,9 @@ context_initialize(Context *context,
 
 /**
  * Releases a previously created context.
+ *
+ * @param context
+ *     The context.
  */
 void
 context_free(Context *context);
