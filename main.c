@@ -177,6 +177,7 @@ handle_events(Context *context)
             /* Prevent compiler warning */
             default: break;
             }
+            break;
 
         case SDL_JOYAXISMOTION:
             switch (event.jaxis.axis) {
