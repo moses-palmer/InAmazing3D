@@ -6,7 +6,18 @@
 
 #define ARGUMENTS_HELP \
     "This application allows exploring a randomly generated maze as an " \
-    "autostereogram interactively."
+    "autostereogram interactively.\n" \
+    "\n" \
+    "The following keys may be used when the program is running:\n" \
+    "\n" \
+    "<ESC>\nExit the program.\n\n" \
+    "<SPACE>\nToggle stereogram mode.\n\n" \
+    "<P>\nToggle pattern animation. An animated pattern makes an animated " \
+    "stereogram easier to keep visible.\n\n" \
+    "<T>\nToggle maze texture when not using stereogram mode. The stereogram " \
+    "pattern is used as texture when enabled.\n\n" \
+    "<Arrow keys>\nControl the object. If you have a joystick connected, you " \
+    "may use it instead."
 
 /* The strength values for the different effects */
 #define LUMINANCE_STRENGTH1_BASE 2.0
