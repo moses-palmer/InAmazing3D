@@ -127,6 +127,10 @@ handle_events(Context *context)
                     !context->stereo.update_pattern;
                 break;
 
+            case SDLK_t:
+                context->gl.apply_texture = !context->gl.apply_texture;
+                break;
+
             case SDLK_UP:
                 context_target_accelerate_y(context, -ACCELERATION);
                 break;

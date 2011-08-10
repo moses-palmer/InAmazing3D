@@ -73,11 +73,15 @@ typedef struct {
         /** The render buffers used */
         GLuint renderbuffers[1];
 
-        /** The thextures used */
-        GLuint textures[1];
+        /** The textures used */
+        GLuint textures[2];
 
         /** Whether to render a stereogram */
         int render_stereo;
+
+        /** Whether to apply the pattern as texture when using plain
+            rendering */
+        int apply_texture;
     } gl;
 
     /**
