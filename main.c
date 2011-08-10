@@ -43,6 +43,15 @@
 #define USER_EVENT_DISPLAY (SDL_USEREVENT + 1)
 
 /**
+ * Whether to prevent flooding the CPU with stereogram generation requests.
+ *
+ * If the CPU does not have time to render stereograms, the process may
+ * eventually slow down to a crawl. If too many frames are skipped though, the
+ * scene will jerk.
+ */
+static int prevent_flooding = 0;
+
+/**
  * The timer callback function.
  *
  * This function pushes an event to SDL to make it execute in the main thread.
@@ -82,7 +91,7 @@ do_display(Context *context)
     glLoadIdentity();
 
     /* Render the context if we have not missed the render window */
-    if (!last_ticks
+    if (!prevent_flooding || !last_ticks
             || current_ticks - last_ticks < TIMER_INTERVAL + TIMER_MARGIN) {
         context_render(context);
     }
@@ -120,6 +129,10 @@ handle_events(Context *context)
 
             case SDLK_SPACE:
                 context->gl.render_stereo = !context->gl.render_stereo;
+                break;
+
+            case SDLK_f:
+                prevent_flooding = !prevent_flooding;
                 break;
 
             case SDLK_p:

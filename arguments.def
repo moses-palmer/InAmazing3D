@@ -12,6 +12,10 @@
     "\n" \
     "<ESC>\nExit the program.\n\n" \
     "<SPACE>\nToggle stereogram mode.\n\n" \
+    "<F>\nToggle flood control. When flood control is enabled, frames will " \
+    "be skipped when the CPU cannot complete them in time. This will make " \
+    "the scene jitter, but if the CPU is flooded with redraw requests, the " \
+    "program may eventually slow down to a crawl.\n\n" \
     "<P>\nToggle pattern animation. An animated pattern makes an animated " \
     "stereogram easier to keep visible.\n\n" \
     "<T>\nToggle maze texture when not using stereogram mode. The stereogram " \
