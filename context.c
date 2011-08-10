@@ -18,7 +18,20 @@
 #define ITARGET_MARGIN (1.0 - TARGET_MARGIN)
 
 /**
- * Updates the speed and position according to the current values.
+ * Updates the position according to the current values.
+ *
+ * @param object
+ *     The context object to move.
+ */
+static void
+context_object_update_position(struct context_object *object)
+{
+    object->x = object->x + object->vx;
+    object->y = object->y + object->vy;
+}
+
+/**
+ * Updates the speed according to the current values.
  *
  * @param object
  *     The context object to move.
@@ -27,11 +40,8 @@
  *     value.
  */
 static void
-context_object_move(struct context_object *object, double resistance)
+context_object_update_speed(struct context_object *object, double resistance)
 {
-    object->x = object->x + object->vx;
-    object->y = object->y + object->vy;
-
     object->vx = resistance * (object->vx + object->ax);
     object->vy = resistance * (object->vy + object->ay);
 }
@@ -545,7 +555,8 @@ context_camera_move(Context *context)
 {
     context_object_target(&context->camera,
         context->target.x, context->target.y, 0.7);
-    context_object_move(&context->camera, 0.1);
+    context_object_update_position(&context->camera);
+    context_object_update_speed(&context->camera, 0.1);
 }
 
 void
@@ -563,108 +574,7 @@ context_target_accelerate_y(Context *context, double a)
 void
 context_target_move(Context *context)
 {
-    /* Retrieve the old room location and the position within the room */
-    int ox, oy;
-    double ofx, ofy;
-    ox = (int)context->target.x;
-    oy = (int)context->target.y;
-    ofx = context->target.x - ox;
-    ofy = context->target.y - oy;
-
-    /* Calculate the new coordinates */
-    context_object_move(&context->target, 0.2);
-    if (context->target.x < -0.5) {
-        context->target.x = -0.5;
-    }
-    else if (context->target.x >= context->maze.data->width - 0.01) {
-        /* Make sure (int)context->target.x < context->maze.data->width */
-        context->target.x = context->maze.data->width - 0.01;
-    }
-
-    /* Retrieve the new room location and the position within the room */
-    int x, y;
-    double fx, fy;
-    x = (int)context->target.x;
-    y = (int)context->target.y;
-    fx = context->target.x - x;
-    fy = context->target.y - y;
-
-    /* Determine what edges we have moved into */
-    int edges = 0
-        | (fx < TARGET_MARGIN ? MAZE_WALL_LEFT : 0)
-        | (fx > ITARGET_MARGIN ? MAZE_WALL_RIGHT : 0)
-        | (fy < TARGET_MARGIN ? MAZE_WALL_UP : 0)
-        | (fy > ITARGET_MARGIN ? MAZE_WALL_DOWN : 0);
-
-    /* Handle bumping into walls of this room */
-    if (edges & MAZE_WALL_LEFT
-            && !maze_is_open_left(context->maze.data, x, y)) {
-        context->target.x = x + TARGET_MARGIN;
-        fx = TARGET_MARGIN;
-        edges &= ~MAZE_WALL_LEFT;
-    }
-    else if (edges & MAZE_WALL_RIGHT
-            && !maze_is_open_right(context->maze.data, x, y)) {
-        context->target.x = x + ITARGET_MARGIN;
-        fx = ITARGET_MARGIN;
-        edges &= ~MAZE_WALL_RIGHT;
-    }
-    if (edges & MAZE_WALL_UP
-            && !maze_is_open_up(context->maze.data, x, y)) {
-        context->target.y = y + TARGET_MARGIN;
-        fy = TARGET_MARGIN;
-        edges &= ~MAZE_WALL_UP;
-    }
-    else if (edges & MAZE_WALL_DOWN
-            && !maze_is_open_down(context->maze.data, x, y)) {
-        context->target.y = y + ITARGET_MARGIN;
-        fy = ITARGET_MARGIN;
-        edges &= ~MAZE_WALL_DOWN;
-    }
-
-    /* Handle bumping into corners */
-    if ((edges & MAZE_CORNER_UP_LEFT) == MAZE_CORNER_UP_LEFT
-            && maze_is_corner_up_left_out(context->maze.data, x, y)) {
-        if (fx > fy) {
-            context->target.x = x + TARGET_MARGIN;
-            edges &= ~MAZE_WALL_LEFT;
-        }
-        else {
-            context->target.y = y + TARGET_MARGIN;
-            edges &= ~MAZE_WALL_UP;
-        }
-    }
-    else if ((edges & MAZE_CORNER_UP_RIGHT) == MAZE_CORNER_UP_RIGHT
-            && maze_is_corner_up_right_out(context->maze.data, x, y)) {
-        if (1.0 - fx > fy) {
-            context->target.x = x + ITARGET_MARGIN;
-            edges &= ~MAZE_WALL_RIGHT;
-        }
-        else {
-            context->target.y = y + TARGET_MARGIN;
-            edges &= ~MAZE_WALL_UP;
-        }
-    }
-    else if ((edges & MAZE_CORNER_DOWN_LEFT) == MAZE_CORNER_DOWN_LEFT
-            && maze_is_corner_down_left_out(context->maze.data, x, y)) {
-        if (1.0 - fx < fy) {
-            context->target.x = x + TARGET_MARGIN;
-            edges &= ~MAZE_WALL_LEFT;
-        }
-        else {
-            context->target.y = y + ITARGET_MARGIN;
-            edges &= ~MAZE_WALL_DOWN;
-        }
-    }
-    else if ((edges & MAZE_CORNER_DOWN_RIGHT) == MAZE_CORNER_DOWN_RIGHT
-            && maze_is_corner_down_right_out(context->maze.data, x, y)) {
-        if (fx < fy) {
-            context->target.x = x + ITARGET_MARGIN;
-            edges &= ~MAZE_WALL_RIGHT;
-        }
-        else {
-            context->target.y = y + ITARGET_MARGIN;
-            edges &= ~MAZE_WALL_DOWN;
-        }
-    }
+    maze_move_point(context->maze.data, &context->target.x, &context->target.y,
+        context->target.vx, context->target.vy, TARGET_MARGIN, TARGET_MARGIN);
+    context_object_update_speed(&context->target, 0.2);
 }
