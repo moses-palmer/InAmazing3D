@@ -296,14 +296,6 @@ main(int argc, char *argv[],
         return 1;
     }
 
-    /* Intialise GLEW */
-    GLenum glew_error = glewInit();
-    if (glew_error != GLEW_OK) {
-        printf("Failed to intialise GLEW: %s\n",
-            glewGetErrorString(glew_error));
-        return 1;
-    }
-
     /* Setup OpenGL */
     opengl_initialize(vinfo->current_w, vinfo->current_h);
 
