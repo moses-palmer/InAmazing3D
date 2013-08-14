@@ -37,9 +37,12 @@
 		</Compiler>
 		<Linker>
 			<Add option="`sdl-config --libs`" />
+			<Add option="-pthread" />
 			<Add library="maze" />
 			<Add library="stereo" />
 			<Add library="para" />
+			<Add library="GL" />
+			<Add library="png12" />
 			<Add directory="libstereo" />
 			<Add directory="libmaze" />
 			<Add directory="libpara" />
@@ -55,12 +58,6 @@
 		<Extensions>
 			<code_completion />
 			<envvars />
-			<lib_finder disable_auto="0">
-				<lib name="libpng12" />
-				<lib name="glew" />
-				<lib name="glu" />
-				<lib name="gl" />
-			</lib_finder>
 			<debugger />
 		</Extensions>
 	</Project>
